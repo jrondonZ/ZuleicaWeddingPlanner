@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Zuleica Wedding Planner · Florals & Events</title>
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #faf8f6;
+      color: #2e2b28;
+      line-height: 1.5;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* Header / Nav */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.8rem 2rem;
+      background: rgba(250, 248, 246, 0.92);
+      backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-bottom: 1px solid rgba(220, 200, 190, 0.2);
+    }
+
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.9rem;
+      font-weight: 500;
+      letter-spacing: 2px;
+      color: #4a3b32;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 3rem;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-size: 0.8rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #4a3b32;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: #b48c7a;
+    }
+
+    /* Hero */
+    .hero {
+      height: 90vh;
+      min-height: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: linear-gradient(rgba(0,0,0,0.12), rgba(0,0,0,0.12)), 
+                  url('https://images.pexels.com/photos/169198/pexels-photo-169198.jpeg?auto=compress&cs=tinysrgb&w=1600') center/cover no-repeat;
+      background-attachment: fixed;
+      color: white;
+      margin-bottom: 2rem;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      padding: 2rem;
+    }
+
+    .hero h1 {
+      font-size: 5rem;
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 4px 18px rgba(0,0,0,0.15);
+    }
+
+    .hero p {
+      font-size: 1.3rem;
+      font-weight: 300;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 2.5rem;
+    }
+
+    .btn {
+      display: inline-block;
+      background: transparent;
+      border: 1.5px solid white;
+      color: white;
+      padding: 1rem 2.8rem;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      text-decoration: none;
+      transition: all 0.3s;
+      font-weight: 400;
+      backdrop-filter: blur(4px);
+    }
+
+    .btn:hover {
+      background: white;
+      color: #2e2b28;
+    }
+
+    .btn-dark {
+      border-color: #4a3b32;
+      color: #4a3b32;
+      margin-top: 1rem;
+    }
+
+    .btn-dark:hover {
+      background: #4a3b32;
+      color: #faf8f6;
+    }
+
+    /* Section titles */
+    .section-title {
+      font-size: 3.2rem;
+      font-weight: 400;
+      text-align: center;
+      margin: 5rem 0 3rem;
+      color: #3f322a;
+      position: relative;
+    }
+
+    .section-title:after {
+      content: "";
+      display: block;
+      width: 70px;
+      height: 1px;
+      background: #cdbbb2;
+      margin: 1rem auto 0;
+    }
+
+    /* Intro / Quote */
+    .intro-text {
+      text-align: center;
+      max-width: 750px;
+      margin: 0 auto 2rem;
+      font-size: 1.3rem;
+      font-weight: 300;
+      color: #5e5149;
+      font-style: italic;
+    }
+
+    /* Services grid */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.5rem;
+      margin: 3rem 0;
+    }
+
+    .service-card {
+      text-align: center;
+      padding: 2rem 1rem;
+      background: white;
+      border-radius: 2px;
+      box-shadow: 0 10px 30px -8px rgba(0,0,0,0.05);
+      transition: transform 0.25s;
+    }
+
+    .service-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .service-icon {
+      font-size: 2.8rem;
+      color: #b48c7a;
+      margin-bottom: 1.8rem;
+    }
+
+    .service-card h3 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .service-card p {
+      color: #5e5149;
+      font-weight: 300;
+    }
+
+    /* Gallery */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: 240px;
+      gap: 1rem;
+      margin: 3rem 0;
+    }
+
+    .gallery-item {
+      overflow: hidden;
+      border-radius: 1px;
+      background-color: #e3dbd3;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s;
+      display: block;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.03);
+    }
+
+    .gallery-item:nth-child(1) { grid-column: span 2; }
+    .gallery-item:nth-child(4) { grid-column: span 2; }
+    .gallery-item:nth-child(5) { grid-column: span 2; }
+
+    /* About + Bio */
+    .about-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4rem;
+      margin: 3rem 0 5rem;
+    }
+
+    .about-image {
+      flex: 1 1 300px;
+      border-radius: 2px;
+      overflow: hidden;
+      box-shadow: 0 20px 30px -10px rgba(0,0,0,0.08);
+    }
+
+    .about-image img {
+      width: 100%;
+      height: 550px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .about-text {
+      flex: 1 1 300px;
+    }
+
+    .about-text h3 {
+      font-size: 2.6rem;
+      margin-bottom: 1.2rem;
+      font-weight: 400;
+    }
+
+    .signature {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      margin-top: 2rem;
+      color: #7f6658;
+    }
+
+    /* Testimonial / Quote */
+    .testimonial {
+      background: #ede7e2;
+      padding: 4.5rem 2rem;
+      margin: 4rem 0;
+      text-align: center;
+      border-radius: 1px;
+    }
+
+    .testimonial i {
+      font-size: 2.5rem;
+      color: #b48c7a;
+      opacity: 0.7;
+      margin-bottom: 1.5rem;
+    }
+
+    .testimonial p {
+      font-size: 1.6rem;
+      font-family: 'Cormorant Garamond', serif;
+      max-width: 800px;
+      margin: 0 auto;
+      font-style: italic;
+      color: #3a2e28;
+    }
+
+    .testimonial cite {
+      display: block;
+      margin-top: 2rem;
+      font-style: normal;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font-size: 0.8rem;
+      color: #5e5149;
+    }
+
+    /* Contact form */
+    .contact-section {
+      background: white;
+      padding: 3rem 3.5rem;
+      border-radius: 2px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.04);
+      margin-bottom: 5rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem 2rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group.full-width {
+      grid-column: span 2;
+    }
+
+    label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 0.5rem;
+      color: #5a4b42;
+    }
+
+    input, textarea, select {
+      padding: 0.9rem 1rem;
+      border: 1px solid #ddd2ca;
+      background: #fdfcfb;
+      font-family: 'Inter', sans-serif;
+      border-radius: 0;
+      font-size: 1rem;
+    }
+
+    textarea {
+      min-height: 120px;
+    }
+
+    button[type="submit"] {
+      background: #4a3b32;
+      color: white;
+      border: none;
+      padding: 1.2rem 2.5rem;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 1rem;
+      grid-column: span 2;
+      justify-self: start;
+    }
+
+    button[type="submit"]:hover {
+      background: #6e5b4f;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid #e1d6d0;
+      padding: 2.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      color: #5e5149;
+      font-size: 0.9rem;
+    }
+
+    .social-icons a {
+      color: #5e5149;
+      margin-left: 1.8rem;
+      font-size: 1.2rem;
+      transition: color 0.2s;
+    }
+
+    .social-icons a:hover {
+      color: #b48c7a;
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        gap: 0.8rem;
+        padding: 1.2rem;
+      }
+      .nav-links {
+        gap: 1.8rem;
+      }
+      .hero h1 {
+        font-size: 3.2rem;
+      }
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+      .gallery-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .gallery-item:nth-child(1),
+      .gallery-item:nth-child(4),
+      .gallery-item:nth-child(5) {
+        grid-column: span 1;
+      }
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .form-group.full-width {
+        grid-column: span 1;
+      }
+      button[type="submit"] {
+        grid-column: span 1;
+      }
+      .container {
+        padding: 0 1.2rem;
+      }
+      .testimonial p {
+        font-size: 1.3rem;
+      }
+    }
+
+    /* Placeholder styling */
+    .note-for-client {
+      background: #f4efe9;
+      padding: 0.6rem 1.5rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #5a4b42;
+      border-bottom: 1px solid #ddd2ca;
+    }
+  </style>
+</head>
+<body>
+  <!-- Very subtle note: this is a demo concept; client can replace images/text -->
+  <div class="note-for-client">
+    ✦  Demo concept for Zuleica Wedding Planner — all images & text are placeholders; ready to customize with real content ✦
+  </div>
+
+  <nav class="navbar">
+    <div class="logo">ZULEICA</div>
+    <div class="nav-links">
+      <a href="#">Home</a>
+      <a href="#">Portfolio</a>
+      <a href="#">Services</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Effortless elegance,<br>tailored to you</h1>
+      <p>Weddings · Florals · Events</p>
+      <a href="#" class="btn">Inquire</a>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="intro-text">
+      “We believe in crafting moments that feel intimate, intentional, and utterly beautiful.”
+    </div>
+
+    <!-- Services -->
+    <h2 class="section-title">Our Signature Services</h2>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon"><i class="fas fa-leaf"></i></div>
+        <h3>Floral Design</h3>
+        <p>Custom arrangements, installations, and bouquets that reflect your unique palette and story.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i class="fas fa-calendar-check"></i></div>
+        <h3>Full Planning</h3>
+        <p>From venue scouting to day-of coordination — a seamless, stress‑free journey.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i class="fas fa-champagne-glasses"></i></div>
+        <h3>Event Styling</h3>
+        <p>Tablescapes, lighting, and decor that bring your vision to life with sophistication.</p>
+      </div>
+    </div>
+
+    <!-- Gallery / Portfolio preview (placeholders) -->
+    <h2 class="section-title">Recent Celebrations</h2>
+  </div> <!-- close container for full-width gallery? let's keep inside container but full width -->
+  <div class="container">
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="https://images.pexels.com/photos/2252282/pexels-photo-2252282.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Wedding tablescape with florals"></div>
+      <div class="gallery-item"><img src="https://images.pexels.com/photos/1724434/pexels-photo-1724434.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Bridal bouquet peonies"></div>
+      <div class="gallery-item"><img src="https://images.pexels.com/photos/3196497/pexels-photo-3196497.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Outdoor ceremony arch"></div>
+      <div class="gallery-item"><img src="https://images.pexels.com/photos/11820862/pexels-photo-11820862.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Reception dinner"></div>
+      <div class="gallery-item"><img src="https://images.pexels.com/photos/1947995/pexels-photo-1947995.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Bride and groom"></div>
+      <div class="gallery-item"><img src="https://images.pexels.com/photos/2966493/pexels-photo-2966493.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Centerpiece detail"></div>
+      <div class="gallery-item"><img src="https://images.pexels.com/photos/169193/pexels-photo-169193.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Wedding cake flowers"></div>
+    </div>
+    <div style="text-align: center;">
+      <a href="#" class="btn btn-dark">View Full Portfolio</a>
+    </div>
+  </div>
+
+  <!-- About Zuleica -->
+  <div class="container">
+    <h2 class="section-title">Meet Zuleica</h2>
+    <div class="about-wrapper">
+      <div class="about-image">
+        <img src="https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Zuleica portrait placeholder">
+      </div>
+      <div class="about-text">
+        <h3>Zuleica Rivera</h3>
+        <p style="font-weight: 300; margin-bottom: 1.2rem;">Founder & Creative Director</p>
+        <p style="color: #4a3b32;">With over a decade of experience in floral artistry and event design, Zuleica approaches every celebration with a painterly eye and a calm presence. Her work is known for its romantic, garden-inspired aesthetic and meticulous attention to detail.</p>
+        <p style="margin-top: 1.5rem;">Whether it’s an intimate elopement or a grand ballroom affair, Zuleica and her team ensure that every moment feels personal and effortlessly beautiful.</p>
+        <div class="signature">Zuleica</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Testimonial -->
+  <div class="testimonial">
+    <i class="fas fa-quote-right"></i>
+    <p>“Zuleica and her team are pure magic. They transformed our venue into a floral wonderland that exceeded every dream. Every detail was perfect.”</p>
+    <cite>— Olivia & James, Santa Ynez</cite>
+  </div>
+
+  <!-- Contact / Inquiry -->
+  <div class="container">
+    <h2 class="section-title">Let's Create Something Beautiful</h2>
+    <div class="contact-section">
+      <form action="#" method="post">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone">
+          </div>
+          <div class="form-group">
+            <label for="event-date">Event Date (approx)</label>
+            <input type="text" id="event-date" name="event-date" placeholder="Month / Year">
+          </div>
+          <div class="form-group full-width">
+            <label for="services">Interested In</label>
+            <select id="services" name="services">
+              <option>Floral Design</option>
+              <option>Full Planning & Design</option>
+              <option>Month-Of Coordination</option>
+              <option>Event Styling</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group full-width">
+            <label for="message">Tell us about your vision</label>
+            <textarea id="message" name="message" placeholder="We'd love to hear about your story, style, and any details you'd like to share..."></textarea>
+          </div>
+          <button type="submit">Send Inquiry</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <div>© 2025 Zuleica Wedding Planner · All rights reserved</div>
+    <div class="social-icons">
+      <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+      <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest-p"></i></a>
+    </div>
+  </footer>
+
+  <!-- Simple demo instruction: replace placeholder images -->
+  <script>
+    // small interactive touch: alert on form submit (demo only)
+    const form = document.querySelector('form');
+    if(form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert('✨ Demo mode: Inquiry sent! (This is a concept — in the real site, the form would connect to Zuleica’s email.)');
+      });
+    }
+  </script>
+</body>
+</html>
