@@ -640,10 +640,9 @@ Hace poco viví uno de los momentos más significativos de mi vida: diseñé y e
   })();
 </script>
 
-  <script>
+<script>
   (function() {
     // ===== SMOOTH SCROLL =====
-    // Navigation links
     const navLinks = document.querySelectorAll('.nav-links a');
     navLinks.forEach(link => {
       link.addEventListener('click', function(e) {
@@ -664,15 +663,14 @@ Hace poco viví uno de los momentos más significativos de mi vida: diseñé y e
       });
     }
 
-    // ===== FORM HANDLING (NO 405 ERROR) =====
+    // ===== FORM HANDLING =====
     const form = document.querySelector('form');
     if (form) {
       form.addEventListener('submit', function(e) {
-        // 1. Stop the browser from actually sending a POST request
         e.preventDefault();
         e.stopPropagation();
 
-        // 2. Basic validation
+        // Validation
         const name = document.getElementById('name')?.value.trim();
         const email = document.getElementById('email')?.value.trim();
         const message = document.getElementById('message')?.value.trim();
@@ -688,33 +686,31 @@ Hace poco viví uno de los momentos más significativos de mi vida: diseñé y e
           return false;
         }
 
-        // 3. Show success message (demo mode)
-        alert('✨ Thank you! Your inquiry has been sent (demo mode).\n\nZuleica will respond within 24–48 hours.');
+        const formspreeId = 'xojypjlr';
         
-         //4. Optionally reset the form (comment out if you want to keep data)
-         form.reset();
-
-         //5. If you want to connect to Formspree later, replace the alert with:
-        
-        fetch('https://formspree.io/f/2985665705879272731', {
+        fetch('https://formspree.io/f/' + formspreeId, {
           method: 'POST',
           body: new FormData(form),
           headers: { 'Accept': 'application/json' }
-        }).then(response => {
+        })
+        .then(response => {
           if (response.ok) {
-            alert('Thank you! Your inquiry has been sent.');
+            alert('✨ Thank you! Your inquiry has been sent. Zuleica will respond within 24-48 hours.');
             form.reset();
           } else {
-            alert('Oops! There was a problem. Please try again.');
+            alert('Oops! There was a problem. Please try again or email us directly.');
           }
-        }).catch(() => alert('Network error. Please try later.'));
-        */
-        
-        return false; // extra safety
+        })
+        .catch(error => {
+          alert('Network error. Please check your connection and try again.');
+          console.error('Form error:', error);
+        });
+
+        return false;
       });
     }
 
-    // ===== SERVICE CARDS CLICK -> PREFILL FORM =====
+    // ===== SERVICE CARDS CLICK =====
     const serviceCards = document.querySelectorAll('.service-card');
     const serviceSelect = document.getElementById('services-select') || document.querySelector('select[name="services"]');
     if (serviceCards.length && serviceSelect) {
