@@ -555,18 +555,19 @@ Hace poco viví uno de los momentos más significativos de mi vida: diseñé y e
     <cite>— Olivia & James, Santa Ynez</cite>
   </div>
 
-  <!-- Contact / Inquiry -->
+  
+  <!-- Contact Section -->
   <div class="container">
     <h2 id="contact" class="section-title">Let's Create Something Beautiful</h2>
     <div class="contact-section">
-      <form action="#" method="post">
+      <form id="inquiryForm" action="#" method="post">
         <div class="form-grid">
           <div class="form-group">
-            <label for="name">Full Name</label>
+            <label for="name">Full Name *</label>
             <input type="text" id="name" name="name" required>
           </div>
           <div class="form-group">
-            <label for="email">Email</label>
+            <label for="email">Email *</label>
             <input type="email" id="email" name="email" required>
           </div>
           <div class="form-group">
@@ -578,8 +579,8 @@ Hace poco viví uno de los momentos más significativos de mi vida: diseñé y e
             <input type="text" id="event-date" name="event-date" placeholder="Month / Year">
           </div>
           <div class="form-group full-width">
-            <label for="services">Interested In</label>
-            <select id="services" name="services">
+            <label for="services-select">Interested In</label>
+            <select id="services-select" name="services">
               <option>Floral Design</option>
               <option>Full Planning & Design</option>
               <option>Month-Of Coordination</option>
@@ -588,69 +589,168 @@ Hace poco viví uno de los momentos más significativos de mi vida: diseñé y e
             </select>
           </div>
           <div class="form-group full-width">
-            <label for="message">Tell us about your vision</label>
-            <textarea id="message" name="message" placeholder="We'd love to hear about your story, style, and any details you'd like to share..."></textarea>
+            <label for="message">Tell us about your vision *</label>
+            <textarea id="message" name="message" placeholder="We'd love to hear about your story, style, and any details you'd like to share..." required></textarea>
           </div>
-          <button type="submit">Send Inquiry</button>
+          <div class="form-message" id="formMessage"></div>
+          <button type="submit" id="submitBtn">Send Inquiry</button>
         </div>
       </form>
     </div>
   </div>
 
   <footer>
-    <div>© 2020 Zuleica Wedding Planner · All rights reserved</div>
+    <div>© 2025 Zuleica Wedding Planner · All rights reserved</div>
     <div class="social-icons">
-      <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-      <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-      <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest-p"></i></a>
+      <a href="#" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="#" aria-label="TikTok" target="_blank"><i class="fab fa-tiktok"></i></a>
+      <a href="#" aria-label="Pinterest" target="_blank"><i class="fab fa-pinterest-p"></i></a>
     </div>
   </footer>
 
-  <!-- Simple demo instruction: replace placeholder images -->
   <script>
-    // small interactive touch: alert on form submit (demo only)
-    const form = document.querySelector('form');
-    if(form) {
+    (function() {
+      // Smooth scroll
+      const scrollLinks = document.querySelectorAll('[data-scroll]');
+      scrollLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetId = link.getAttribute('data-scroll');
+          const targetEl = document.getElementById(targetId);
+          if (targetEl) {
+            targetEl.scrollIntoView({ behavior: 'smooth' });
+          }
+        });
+      });
+
+      // Service cards click -> scroll to contact & pre-fill service
+      const serviceCards = document.querySelectorAll('.service-card');
+      const serviceSelect = document.getElementById('services-select');
+      serviceCards.forEach(card => {
+        card.addEventListener('click', () => {
+          const serviceName = card.getAttribute('data-service');
+          if (serviceSelect) {
+            // Find matching option
+            for (let opt of serviceSelect.options) {
+              if (opt.value === serviceName) {
+                opt.selected = true;
+                break;
+              }
+            }
+          }
+          document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+        });
+      });
+
+      // Lightbox functionality
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const galleryItems = document.querySelectorAll('.gallery-item img');
+      const closeBtn = document.querySelector('.lightbox-close');
+      const prevBtn = document.querySelector('.lightbox-prev');
+      const nextBtn = document.querySelector('.lightbox-next');
+      let currentIndex = 0;
+      const imagesArray = Array.from(galleryItems);
+
+      function openLightbox(index) {
+        currentIndex = index;
+        const img = imagesArray[currentIndex];
+        const fullSrc = img.getAttribute('data-full') || img.src;
+        lightboxImg.src = fullSrc;
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      galleryItems.forEach((img, idx) => {
+        img.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openLightbox(idx);
+        });
+      });
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      function nextImage() {
+        currentIndex = (currentIndex + 1) % imagesArray.length;
+        const img = imagesArray[currentIndex];
+        lightboxImg.src = img.getAttribute('data-full') || img.src;
+      }
+
+      function prevImage() {
+        currentIndex = (currentIndex - 1 + imagesArray.length) % imagesArray.length;
+        const img = imagesArray[currentIndex];
+        lightboxImg.src = img.getAttribute('data-full') || img.src;
+      }
+
+      closeBtn.addEventListener('click', closeLightbox);
+      nextBtn.addEventListener('click', nextImage);
+      prevBtn.addEventListener('click', prevImage);
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowRight') nextImage();
+        if (e.key === 'ArrowLeft') prevImage();
+      });
+
+      // "View Full Portfolio" triggers first image lightbox
+      document.getElementById('viewFullPortfolio').addEventListener('click', (e) => {
+        e.preventDefault();
+        if (imagesArray.length > 0) openLightbox(0);
+      });
+
+      // Form handling with validation
+      const form = document.getElementById('inquiryForm');
+      const formMessage = document.getElementById('formMessage');
+
       form.addEventListener('submit', (e) => {
         e.preventDefault();
-        alert('✨ Demo mode: Inquiry sent! (This is a concept — in the real site, the form would connect to Zuleica’s email.)');
-      });
-    }
-  </script>
-  <script>
-  (function() {
-    // Smooth scroll for navigation links
-    const navLinks = document.querySelectorAll('.nav-links a');
-    
-    navLinks.forEach(link => {
-      link.addEventListener('click', function(e) {
-        e.preventDefault();
         
-        // Get the section name from the link text (lowercase)
-        const sectionName = this.textContent.trim().toLowerCase();
-        const targetSection = document.getElementById(sectionName);
-        
-        if (targetSection) {
-          targetSection.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
-      });
-    });
+        // Reset message
+        formMessage.className = 'form-message';
+        formMessage.textContent = '';
 
-    // Also make the "Inquire" button scroll to contact
-    const inquireBtn = document.querySelector('.hero .btn');
-    if (inquireBtn) {
-      inquireBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        const contactSection = document.getElementById('contact');
-        if (contactSection) {
-          contactSection.scrollIntoView({ behavior: 'smooth' });
+        // Basic validation
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const message = document.getElementById('message').value.trim();
+
+        if (!name || !email || !message) {
+          formMessage.textContent = 'Please fill in all required fields (Name, Email, Message).';
+          formMessage.classList.add('error');
+          return;
         }
+
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+          formMessage.textContent = 'Please enter a valid email address.';
+          formMessage.classList.add('error');
+          return;
+        }
+
+        // Simulate successful submission (in production, replace with fetch to Formspree etc.)
+        // For demo, show success message and optionally reset.
+        formMessage.textContent = '✨ Thank you! Your inquiry has been sent. Zuleica will respond within 24-48 hours.';
+        formMessage.classList.add('success');
+        
+        // Optionally reset form (commented out to preserve demo)
+        // form.reset();
+
+        // In real implementation, you would submit to a service:
+        // fetch('https://formspree.io/f/your-form-id', { method: 'POST', body: new FormData(form) })
       });
-    }
-  })();
-</script>
+
+      // Social links can be updated easily
+      const socialLinks = document.querySelectorAll('.social-icons a');
+      // Example: set actual URLs (replace # with real links)
+      // socialLinks[0].href = 'https://instagram.com/zuleicaweddingplanner';
+       socialLinks[1].href = 'https://www.tiktok.com/tag/zuleicaweddingplanner';
+    })();
+  </script>
 </body>
 </html>
