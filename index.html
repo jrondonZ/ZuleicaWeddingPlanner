@@ -609,6 +609,42 @@ Hace poco viví uno de los momentos más significativos de mi vida: diseñé y e
   </footer>
 
   <script>
+  (function() {
+    // Smooth scroll for navigation links
+    const navLinks = document.querySelectorAll('.nav-links a');
+    
+    navLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Get the section name from the link text (lowercase)
+        const sectionName = this.textContent.trim().toLowerCase();
+        const targetSection = document.getElementById(sectionName);
+        
+        if (targetSection) {
+          targetSection.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Also make the "Inquire" button scroll to contact
+    const inquireBtn = document.querySelector('.hero .btn');
+    if (inquireBtn) {
+      inquireBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const contactSection = document.getElementById('contact');
+        if (contactSection) {
+          contactSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    }
+  })();
+</script>
+
+  <script>
     (function() {
       // Smooth scroll
       const scrollLinks = document.querySelectorAll('[data-scroll]');
