@@ -645,148 +645,100 @@ Hace poco viví uno de los momentos más significativos de mi vida: diseñé y e
 </script>
 
   <script>
-    (function() {
-      // Smooth scroll
-      const scrollLinks = document.querySelectorAll('[data-scroll]');
-      scrollLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-          e.preventDefault();
-          const targetId = link.getAttribute('data-scroll');
-          const targetEl = document.getElementById(targetId);
-          if (targetEl) {
-            targetEl.scrollIntoView({ behavior: 'smooth' });
-          }
-        });
+  (function() {
+    // ===== SMOOTH SCROLL =====
+    // Navigation links
+    const navLinks = document.querySelectorAll('.nav-links a');
+    navLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const sectionName = this.textContent.trim().toLowerCase();
+        const target = document.getElementById(sectionName);
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
       });
+    });
 
-      // Service cards click -> scroll to contact & pre-fill service
-      const serviceCards = document.querySelectorAll('.service-card');
-      const serviceSelect = document.getElementById('services-select');
+    // Inquire button
+    const inquireBtn = document.querySelector('.hero .btn');
+    if (inquireBtn) {
+      inquireBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const contact = document.getElementById('contact');
+        if (contact) contact.scrollIntoView({ behavior: 'smooth' });
+      });
+    }
+
+    // ===== FORM HANDLING (NO 405 ERROR) =====
+    const form = document.querySelector('form');
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        // 1. Stop the browser from actually sending a POST request
+        e.preventDefault();
+        e.stopPropagation();
+
+        // 2. Basic validation
+        const name = document.getElementById('name')?.value.trim();
+        const email = document.getElementById('email')?.value.trim();
+        const message = document.getElementById('message')?.value.trim();
+
+        if (!name || !email || !message) {
+          alert('Please fill in all required fields: Name, Email, and Message.');
+          return false;
+        }
+
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+          alert('Please enter a valid email address.');
+          return false;
+        }
+
+        // 3. Show success message (demo mode)
+        alert('✨ Thank you! Your inquiry has been sent (demo mode).\n\nZuleica will respond within 24–48 hours.');
+        
+        // 4. Optionally reset the form (comment out if you want to keep data)
+        // form.reset();
+
+        // 5. If you want to connect to Formspree later, replace the alert with:
+        /*
+        fetch('https://formspree.io/f/YOUR_FORM_ID', {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        }).then(response => {
+          if (response.ok) {
+            alert('Thank you! Your inquiry has been sent.');
+            form.reset();
+          } else {
+            alert('Oops! There was a problem. Please try again.');
+          }
+        }).catch(() => alert('Network error. Please try later.'));
+        */
+        
+        return false; // extra safety
+      });
+    }
+
+    // ===== SERVICE CARDS CLICK -> PREFILL FORM =====
+    const serviceCards = document.querySelectorAll('.service-card');
+    const serviceSelect = document.getElementById('services-select') || document.querySelector('select[name="services"]');
+    if (serviceCards.length && serviceSelect) {
       serviceCards.forEach(card => {
         card.addEventListener('click', () => {
-          const serviceName = card.getAttribute('data-service');
-          if (serviceSelect) {
-            // Find matching option
+          const serviceName = card.getAttribute('data-service') || 
+                              card.querySelector('h3')?.textContent.trim();
+          if (serviceName) {
             for (let opt of serviceSelect.options) {
-              if (opt.value === serviceName) {
+              if (opt.value === serviceName || opt.text === serviceName) {
                 opt.selected = true;
                 break;
               }
             }
           }
-          document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+          document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
         });
       });
-
-      // Lightbox functionality
-      const lightbox = document.getElementById('lightbox');
-      const lightboxImg = document.getElementById('lightbox-img');
-      const galleryItems = document.querySelectorAll('.gallery-item img');
-      const closeBtn = document.querySelector('.lightbox-close');
-      const prevBtn = document.querySelector('.lightbox-prev');
-      const nextBtn = document.querySelector('.lightbox-next');
-      let currentIndex = 0;
-      const imagesArray = Array.from(galleryItems);
-
-      function openLightbox(index) {
-        currentIndex = index;
-        const img = imagesArray[currentIndex];
-        const fullSrc = img.getAttribute('data-full') || img.src;
-        lightboxImg.src = fullSrc;
-        lightbox.classList.add('active');
-        document.body.style.overflow = 'hidden';
-      }
-
-      galleryItems.forEach((img, idx) => {
-        img.addEventListener('click', (e) => {
-          e.stopPropagation();
-          openLightbox(idx);
-        });
-      });
-
-      function closeLightbox() {
-        lightbox.classList.remove('active');
-        document.body.style.overflow = '';
-      }
-
-      function nextImage() {
-        currentIndex = (currentIndex + 1) % imagesArray.length;
-        const img = imagesArray[currentIndex];
-        lightboxImg.src = img.getAttribute('data-full') || img.src;
-      }
-
-      function prevImage() {
-        currentIndex = (currentIndex - 1 + imagesArray.length) % imagesArray.length;
-        const img = imagesArray[currentIndex];
-        lightboxImg.src = img.getAttribute('data-full') || img.src;
-      }
-
-      closeBtn.addEventListener('click', closeLightbox);
-      nextBtn.addEventListener('click', nextImage);
-      prevBtn.addEventListener('click', prevImage);
-      lightbox.addEventListener('click', (e) => {
-        if (e.target === lightbox) closeLightbox();
-      });
-      document.addEventListener('keydown', (e) => {
-        if (!lightbox.classList.contains('active')) return;
-        if (e.key === 'Escape') closeLightbox();
-        if (e.key === 'ArrowRight') nextImage();
-        if (e.key === 'ArrowLeft') prevImage();
-      });
-
-      // "View Full Portfolio" triggers first image lightbox
-      document.getElementById('viewFullPortfolio').addEventListener('click', (e) => {
-        e.preventDefault();
-        if (imagesArray.length > 0) openLightbox(0);
-      });
-
-      // Form handling with validation
-      const form = document.getElementById('inquiryForm');
-      const formMessage = document.getElementById('formMessage');
-
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        // Reset message
-        formMessage.className = 'form-message';
-        formMessage.textContent = '';
-
-        // Basic validation
-        const name = document.getElementById('name').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const message = document.getElementById('message').value.trim();
-
-        if (!name || !email || !message) {
-          formMessage.textContent = 'Please fill in all required fields (Name, Email, Message).';
-          formMessage.classList.add('error');
-          return;
-        }
-
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailPattern.test(email)) {
-          formMessage.textContent = 'Please enter a valid email address.';
-          formMessage.classList.add('error');
-          return;
-        }
-
-        // Simulate successful submission (in production, replace with fetch to Formspree etc.)
-        // For demo, show success message and optionally reset.
-        formMessage.textContent = '✨ Thank you! Your inquiry has been sent. Zuleica will respond within 24-48 hours.';
-        formMessage.classList.add('success');
-        
-        // Optionally reset form (commented out to preserve demo)
-        // form.reset();
-
-        // In real implementation, you would submit to a service:
-        // fetch('https://formspree.io/f/your-form-id', { method: 'POST', body: new FormData(form) })
-      });
-
-      // Social links can be updated easily
-      const socialLinks = document.querySelectorAll('.social-icons a');
-      // Example: set actual URLs (replace # with real links)
-      // socialLinks[0].href = 'https://instagram.com/zuleicaweddingplanner';
-       socialLinks[1].href = 'https://www.tiktok.com/tag/zuleicaweddingplanner';
-    })();
-  </script>
+    }
+  })();
+</script>
 </body>
 </html>
