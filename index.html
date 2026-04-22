@@ -453,6 +453,9 @@
       color: #5a4b42;
       border-bottom: 1px solid #ddd2ca;
     }
+    html {
+  scroll-padding-top: 100px; /* Adjust based on navbar height */
+}
   </style>
 </head>
 <body>
@@ -472,7 +475,7 @@
     </div>
   </nav>
 
-  <section class="hero">
+  <section id="home" class="hero">
     <div class="hero-content">
       <h1>Effortless elegance,<br>tailored to you</h1>
       <p>Weddings · Florals · Events</p>
@@ -486,7 +489,7 @@
     </div>
 
     <!-- Services -->
-    <h2 class="section-title">Our Signature Services</h2>
+    <h2 id="services" class="section-title">Our Signature Services</h2>
     <div class="services-grid">
       <div class="service-card">
         <div class="service-icon"><i class="fas fa-leaf"></i></div>
@@ -506,7 +509,7 @@
     </div>
 
     <!-- Gallery / Portfolio preview (placeholders) -->
-    <h2 class="section-title">Recent Celebrations</h2>
+    <h2 id="portfolio" class="section-title">Recent Celebrations</h2>
   </div> <!-- close container for full-width gallery? let's keep inside container but full width -->
   <div class="container">
     <div class="gallery-grid">
@@ -525,7 +528,7 @@
 
   <!-- About Zuleica -->
   <div class="container">
-    <h2 class="section-title">Meet Zuleica</h2>
+    <h2 id="about" class="section-title">Meet Zuleica</h2>
     <div class="about-wrapper">
       <div class="about-image">
         <img src="zuleica-portrait.jpeg" alt="Zuleica portrait">
@@ -554,7 +557,7 @@ Hace poco viví uno de los momentos más significativos de mi vida: diseñé y e
 
   <!-- Contact / Inquiry -->
   <div class="container">
-    <h2 class="section-title">Let's Create Something Beautiful</h2>
+    <h2 id="contact" class="section-title">Let's Create Something Beautiful</h2>
     <div class="contact-section">
       <form action="#" method="post">
         <div class="form-grid">
@@ -614,5 +617,40 @@ Hace poco viví uno de los momentos más significativos de mi vida: diseñé y e
       });
     }
   </script>
+  <script>
+  (function() {
+    // Smooth scroll for navigation links
+    const navLinks = document.querySelectorAll('.nav-links a');
+    
+    navLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Get the section name from the link text (lowercase)
+        const sectionName = this.textContent.trim().toLowerCase();
+        const targetSection = document.getElementById(sectionName);
+        
+        if (targetSection) {
+          targetSection.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Also make the "Inquire" button scroll to contact
+    const inquireBtn = document.querySelector('.hero .btn');
+    if (inquireBtn) {
+      inquireBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const contactSection = document.getElementById('contact');
+        if (contactSection) {
+          contactSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    }
+  })();
+</script>
 </body>
 </html>
