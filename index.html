@@ -524,6 +524,27 @@
     </div>
   </div>
 
+  <!-- ===== Portfolio Modal ===== -->
+  <div class="portfolio-modal-overlay" id="portfolioModalOverlay">
+    <div class="portfolio-modal">
+      <span class="modal-close" id="modalClose">&times;</span>
+      <h3 class="modal-title">Our Full Portfolio</h3>
+      <div class="modal-gallery-grid" id="modalGalleryGrid">
+        <!-- Images are injected by JavaScript for easy editing -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Lightbox (for modal images) ===== -->
+  <div class="lightbox-overlay" id="lightboxOverlay">
+    <span class="lightbox-close" id="lightboxClose">&times;</span>
+    <span class="lightbox-prev" id="lightboxPrev"><i class="fas fa-chevron-left"></i></span>
+    <span class="lightbox-next" id="lightboxNext"><i class="fas fa-chevron-right"></i></span>
+    <div class="lightbox-content">
+      <img id="lightboxImg" src="" alt="">
+    </div>
+  </div>
+
   <!-- About Zuleica -->
   <div class="container">
     <h2 id="about" class="section-title">Meet Zuleica</h2>
@@ -607,6 +628,116 @@ Hace poco viví uno de los momentos más significativos de mi vida: diseñé y e
     </a>
   </div>
 </footer>
+
+   <script>
+    (function() {
+      // ===== IMAGE ARRAY FOR MODAL (EDIT THESE WITH YOUR OWN IMAGES) =====
+      const portfolioImages = [
+        { src: 'IMG_5458.jpeg', full: 'IMG_5458.jpeg', alt: 'Wedding tablescape' },
+        { src: 'IMG_6997.jpeg', full: 'IMG_6997.jpeg', alt: 'Bridal bouquet' },
+        { src: 'IMG_8799.jpeg', full: 'IMG_8799.jpeg', alt: 'Outdoor ceremony arch' },
+        { src: 'IMG_8800.jpeg', full: 'IMG_8800.jpeg', alt: 'Reception dinner' },
+        { src: 'IMG_8801.jpeg', full: 'IMG_8801.jpeg', alt: 'Wedding cake flowers' },
+        // Add more images here (use local filenames or full URLs)
+        { src: 'IMG_8802.jpeg', full: 'https://images.pexels.com/photos/2252282/pexels-photo-2252282.jpeg?auto=compress&cs=tinysrgb&w=1200', alt: 'Elegant tablescape' },
+        { src: 'https://images.pexels.com/photos/1724434/pexels-photo-1724434.jpeg?auto=compress&cs=tinysrgb&w=600', full: 'https://images.pexels.com/photos/1724434/pexels-photo-1724434.jpeg?auto=compress&cs=tinysrgb&w=1200', alt: 'Peony bouquet' },
+        { src: 'https://images.pexels.com/photos/3196497/pexels-photo-3196497.jpeg?auto=compress&cs=tinysrgb&w=600', full: 'https://images.pexels.com/photos/3196497/pexels-photo-3196497.jpeg?auto=compress&cs=tinysrgb&w=1200', alt: 'Ceremony arch' },
+        { src: 'https://images.pexels.com/photos/1947995/pexels-photo-1947995.jpeg?auto=compress&cs=tinysrgb&w=600', full: 'https://images.pexels.com/photos/1947995/pexels-photo-1947995.jpeg?auto=compress&cs=tinysrgb&w=1200', alt: 'Couple' },
+        { src: 'https://images.pexels.com/photos/2966493/pexels-photo-2966493.jpeg?auto=compress&cs=tinysrgb&w=600', full: 'https://images.pexels.com/photos/2966493/pexels-photo-2966493.jpeg?auto=compress&cs=tinysrgb&w=1200', alt: 'Centerpiece' }
+      ];
+
+      // Populate modal gallery
+      const modalGallery = document.getElementById('modalGalleryGrid');
+      portfolioImages.forEach((img, index) => {
+        const item = document.createElement('div');
+        item.className = 'modal-gallery-item';
+        item.dataset.index = index;
+        item.innerHTML = `<img src="${img.src}" alt="${img.alt}" data-full="${img.full}">`;
+        modalGallery.appendChild(item);
+      });
+
+      // ===== PORTFOLIO MODAL LOGIC =====
+      const modalOverlay = document.getElementById('portfolioModalOverlay');
+      const openBtn = document.getElementById('viewFullPortfolioBtn');
+      const closeBtn = document.getElementById('modalClose');
+
+      openBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        modalOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+
+      function closeModal() {
+        modalOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      closeBtn.addEventListener('click', closeModal);
+      modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) closeModal();
+      });
+
+      // ===== LIGHTBOX LOGIC =====
+      const lightboxOverlay = document.getElementById('lightboxOverlay');
+      const lightboxImg = document.getElementById('lightboxImg');
+      const lightboxClose = document.getElementById('lightboxClose');
+      const lightboxPrev = document.getElementById('lightboxPrev');
+      const lightboxNext = document.getElementById('lightboxNext');
+      let currentLightboxIndex = 0;
+
+      function openLightbox(index) {
+        currentLightboxIndex = index;
+        const imgData = portfolioImages[index];
+        lightboxImg.src = imgData.full;
+        lightboxImg.alt = imgData.alt;
+        lightboxOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLightbox() {
+        lightboxOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      function nextLightbox() {
+        currentLightboxIndex = (currentLightboxIndex + 1) % portfolioImages.length;
+        const img = portfolioImages[currentLightboxIndex];
+        lightboxImg.src = img.full;
+        lightboxImg.alt = img.alt;
+      }
+
+      function prevLightbox() {
+        currentLightboxIndex = (currentLightboxIndex - 1 + portfolioImages.length) % portfolioImages.length;
+        const img = portfolioImages[currentLightboxIndex];
+        lightboxImg.src = img.full;
+        lightboxImg.alt = img.alt;
+      }
+
+      // Event delegation for modal gallery images
+      modalGallery.addEventListener('click', (e) => {
+        const img = e.target.closest('img');
+        if (!img) return;
+        const parent = img.closest('.modal-gallery-item');
+        if (!parent) return;
+        const index = parseInt(parent.dataset.index, 10);
+        if (!isNaN(index)) openLightbox(index);
+      });
+
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightboxPrev.addEventListener('click', prevLightbox);
+      lightboxNext.addEventListener('click', nextLightbox);
+
+      lightboxOverlay.addEventListener('click', (e) => {
+        if (e.target === lightboxOverlay) closeLightbox();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!lightboxOverlay.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowRight') nextLightbox();
+        if (e.key === 'ArrowLeft') prevLightbox();
+      });
+      </script>
 
   <script>
   (function() {
