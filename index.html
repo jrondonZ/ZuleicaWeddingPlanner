@@ -121,6 +121,7 @@
       font-size: 0.9rem;
       text-transform: uppercase;
       letter-spacing: 3px;
+      cursor: pointer;
       text-decoration: none;
       transition: all 0.3s;
       font-weight: 400;
@@ -188,6 +189,7 @@
       border-radius: 2px;
       box-shadow: 0 10px 30px -8px rgba(0,0,0,0.05);
       transition: transform 0.25s;
+      cursor: pointer;
     }
 
     .service-card:hover {
@@ -210,7 +212,7 @@
       font-weight: 300;
     }
 
-    /* Gallery */
+    /* Gallery grid (main page) */
     .gallery-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -240,6 +242,157 @@
     .gallery-item:nth-child(1) { grid-column: span 2; }
     .gallery-item:nth-child(4) { grid-column: span 2; }
     .gallery-item:nth-child(5) { grid-column: span 2; }
+
+    /* ===== Portfolio Modal ===== */
+    .portfolio-modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(6px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .portfolio-modal-overlay.active {
+      display: flex;
+    }
+
+    .portfolio-modal {
+      background: white;
+      width: 90%;
+      max-width: 1100px;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 3rem 2rem;
+      border-radius: 4px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px; right: 25px;
+      font-size: 2.2rem;
+      color: #4a3b32;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .modal-close:hover {
+      color: #b48c7a;
+    }
+
+    .modal-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem;
+      text-align: center;
+      color: #3f322a;
+      margin-bottom: 2.5rem;
+    }
+
+    .modal-title:after {
+      content: "";
+      display: block;
+      width: 60px;
+      height: 1px;
+      background: #cdbbb2;
+      margin: 0.8rem auto 0;
+    }
+
+    /* Modal image grid */
+    .modal-gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+    }
+
+    .modal-gallery-item {
+      overflow: hidden;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .modal-gallery-item:hover {
+      transform: scale(1.02);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    .modal-gallery-item img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Lightbox (for images clicked inside modal) */
+    .lightbox-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.95);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox-overlay.active {
+      display: flex;
+    }
+
+    .lightbox-content {
+      position: relative;
+      max-width: 90%;
+      max-height: 90%;
+    }
+
+    .lightbox-content img {
+      max-width: 100%;
+      max-height: 85vh;
+      object-fit: contain;
+      border-radius: 3px;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 20px; right: 30px;
+      font-size: 2.8rem;
+      color: white;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .lightbox-prev, .lightbox-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: white;
+      font-size: 3rem;
+      cursor: pointer;
+      padding: 0.8rem;
+      background: rgba(0,0,0,0.4);
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      transition: background 0.2s;
+    }
+
+    .lightbox-prev:hover, .lightbox-next:hover {
+      background: rgba(0,0,0,0.8);
+    }
+
+    .lightbox-prev { left: 20px; }
+    .lightbox-next { right: 20px; }
 
     /* About + Bio */
     .about-wrapper {
@@ -281,7 +434,7 @@
       color: #7f6658;
     }
 
-    /* Testimonial / Quote */
+    /* Testimonial */
     .testimonial {
       background: #ede7e2;
       padding: 4.5rem 2rem;
@@ -442,9 +595,21 @@
       .testimonial p {
         font-size: 1.3rem;
       }
+      .modal-gallery-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .lightbox-prev, .lightbox-next {
+        width: 45px; height: 45px;
+        font-size: 2rem;
+      }
     }
 
-    /* Placeholder styling */
+    @media (max-width: 480px) {
+      .modal-gallery-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     .note-for-client {
       background: #f4efe9;
       padding: 0.6rem 1.5rem;
@@ -453,13 +618,13 @@
       color: #5a4b42;
       border-bottom: 1px solid #ddd2ca;
     }
+
     html {
-  scroll-padding-top: 100px; /* Adjust based on navbar height */
-}
+      scroll-padding-top: 100px;
+    }
   </style>
 </head>
 <body>
-  <!-- Very subtle note: this is a demo concept; client can replace images/text -->
   <div class="note-for-client">
     ✦  Concept for Zuleica Wedding Planner   ✦
   </div>
@@ -488,29 +653,28 @@
       “We believe in crafting moments that feel intimate, intentional, and utterly beautiful.”
     </div>
 
-    <!-- Services -->
     <h2 id="services" class="section-title">Our Signature Services</h2>
     <div class="services-grid">
-      <div class="service-card">
+      <div class="service-card" data-service="Floral Design">
         <div class="service-icon"><i class="fas fa-leaf"></i></div>
         <h3>Floral Design</h3>
         <p>Custom arrangements, installations, and bouquets that reflect your unique palette and story.</p>
       </div>
-      <div class="service-card">
+      <div class="service-card" data-service="Full Planning & Design">
         <div class="service-icon"><i class="fas fa-calendar-check"></i></div>
         <h3>Full Planning</h3>
         <p>From venue scouting to day-of coordination — a seamless, stress‑free journey.</p>
       </div>
-      <div class="service-card">
+      <div class="service-card" data-service="Event Styling">
         <div class="service-icon"><i class="fas fa-champagne-glasses"></i></div>
         <h3>Event Styling</h3>
         <p>Tablescapes, lighting, and decor that bring your vision to life with sophistication.</p>
       </div>
     </div>
 
-    <!-- Gallery / Portfolio preview (placeholders) -->
     <h2 id="portfolio" class="section-title">Recent Celebrations</h2>
-  </div> <!-- close container for full-width gallery? let's keep inside container but full width -->
+  </div>
+
   <div class="container">
     <div class="gallery-grid">
       <div class="gallery-item"><img src="IMG_5458.jpeg" alt="Wedding tablescape with florals"></div>
@@ -520,7 +684,7 @@
       <div class="gallery-item"><img src="IMG_8801.jpeg" alt="Wedding cake flowers"></div>
     </div>
     <div style="text-align: center;">
-      <a href="#" class="btn btn-dark">View Full Portfolio</a>
+      <a href="#" class="btn btn-dark" id="viewFullPortfolioBtn">View Full Portfolio</a>
     </div>
   </div>
 
@@ -573,7 +737,6 @@ Hace poco viví uno de los momentos más significativos de mi vida: diseñé y e
     <cite>— Olivia & James, Santa Ynez</cite>
   </div>
 
-  
   <!-- Contact Section -->
   <div class="container">
     <h2 id="contact" class="section-title">Let's Create Something Beautiful</h2>
@@ -618,18 +781,18 @@ Hace poco viví uno de los momentos más significativos de mi vida: diseñé y e
   </div>
 
   <footer>
-  <div>© 2026 Zuleica Wedding Planner · All rights reserved</div>
-  <div class="social-icons">
-    <a href="https://www.instagram.com/z.weddingsandmore?igsh=MWV5YXJjcjRudXljdg==" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-      <i class="fab fa-instagram"></i>
-    </a>
-    <a href="https://www.tiktok.com/@z.weddingsandmore" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
-      <i class="fab fa-tiktok"></i>
-    </a>
-  </div>
-</footer>
+    <div>© 2026 Zuleica Wedding Planner · All rights reserved</div>
+    <div class="social-icons">
+      <a href="https://www.instagram.com/z.weddingsandmore?igsh=MWV5YXJjcjRudXljdg==" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+        <i class="fab fa-instagram"></i>
+      </a>
+      <a href="https://www.tiktok.com/@z.weddingsandmore" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+        <i class="fab fa-tiktok"></i>
+      </a>
+    </div>
+  </footer>
 
-   <script>
+  <script>
     (function() {
       // ===== IMAGE ARRAY FOR MODAL (EDIT THESE WITH YOUR OWN IMAGES) =====
       const portfolioImages = [
@@ -639,7 +802,7 @@ Hace poco viví uno de los momentos más significativos de mi vida: diseñé y e
         { src: 'IMG_8800.jpeg', full: 'IMG_8800.jpeg', alt: 'Reception dinner' },
         { src: 'IMG_8801.jpeg', full: 'IMG_8801.jpeg', alt: 'Wedding cake flowers' },
         // Add more images here (use local filenames or full URLs)
-        { src: 'IMG_8802.jpeg', full: 'https://images.pexels.com/photos/2252282/pexels-photo-2252282.jpeg?auto=compress&cs=tinysrgb&w=1200', alt: 'Elegant tablescape' },
+        { src: 'https://images.pexels.com/photos/2252282/pexels-photo-2252282.jpeg?auto=compress&cs=tinysrgb&w=600', full: 'https://images.pexels.com/photos/2252282/pexels-photo-2252282.jpeg?auto=compress&cs=tinysrgb&w=1200', alt: 'Elegant tablescape' },
         { src: 'https://images.pexels.com/photos/1724434/pexels-photo-1724434.jpeg?auto=compress&cs=tinysrgb&w=600', full: 'https://images.pexels.com/photos/1724434/pexels-photo-1724434.jpeg?auto=compress&cs=tinysrgb&w=1200', alt: 'Peony bouquet' },
         { src: 'https://images.pexels.com/photos/3196497/pexels-photo-3196497.jpeg?auto=compress&cs=tinysrgb&w=600', full: 'https://images.pexels.com/photos/3196497/pexels-photo-3196497.jpeg?auto=compress&cs=tinysrgb&w=1200', alt: 'Ceremony arch' },
         { src: 'https://images.pexels.com/photos/1947995/pexels-photo-1947995.jpeg?auto=compress&cs=tinysrgb&w=600', full: 'https://images.pexels.com/photos/1947995/pexels-photo-1947995.jpeg?auto=compress&cs=tinysrgb&w=1200', alt: 'Couple' },
@@ -737,135 +900,92 @@ Hace poco viví uno de los momentos más significativos de mi vida: diseñé y e
         if (e.key === 'ArrowRight') nextLightbox();
         if (e.key === 'ArrowLeft') prevLightbox();
       });
-      </script>
 
-  <script>
-  (function() {
-    // Smooth scroll for navigation links
-    const navLinks = document.querySelectorAll('.nav-links a');
-    
-    navLinks.forEach(link => {
-      link.addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        // Get the section name from the link text (lowercase)
-        const sectionName = this.textContent.trim().toLowerCase();
-        const targetSection = document.getElementById(sectionName);
-        
-        if (targetSection) {
-          targetSection.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
-      });
-    });
-
-    // Also make the "Inquire" button scroll to contact
-    const inquireBtn = document.querySelector('.hero .btn');
-    if (inquireBtn) {
-      inquireBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        const contactSection = document.getElementById('contact');
-        if (contactSection) {
-          contactSection.scrollIntoView({ behavior: 'smooth' });
-        }
-      });
-    }
-  })();
-</script>
-
-<script>
-  (function() {
-    // ===== SMOOTH SCROLL =====
-    const navLinks = document.querySelectorAll('.nav-links a');
-    navLinks.forEach(link => {
-      link.addEventListener('click', function(e) {
-        e.preventDefault();
-        const sectionName = this.textContent.trim().toLowerCase();
-        const target = document.getElementById(sectionName);
-        if (target) target.scrollIntoView({ behavior: 'smooth' });
-      });
-    });
-
-    // Inquire button
-    const inquireBtn = document.querySelector('.hero .btn');
-    if (inquireBtn) {
-      inquireBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        const contact = document.getElementById('contact');
-        if (contact) contact.scrollIntoView({ behavior: 'smooth' });
-      });
-    }
-
-    // ===== FORM HANDLING =====
-    const form = document.querySelector('form');
-    if (form) {
-      form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        // Validation
-        const name = document.getElementById('name')?.value.trim();
-        const email = document.getElementById('email')?.value.trim();
-        const message = document.getElementById('message')?.value.trim();
-
-        if (!name || !email || !message) {
-          alert('Please fill in all required fields: Name, Email, and Message.');
-          return false;
-        }
-
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailPattern.test(email)) {
-          alert('Please enter a valid email address.');
-          return false;
-        }
-
-        const formspreeId = 'xwvawlqa';
-        
-        fetch('https://formspree.io/f/' + formspreeId, {
-          method: 'POST',
-          body: new FormData(form),
-          headers: { 'Accept': 'application/json' }
-        })
-        .then(response => {
-          if (response.ok) {
-            alert('✨ Thank you! Your inquiry has been sent. Zuleica will respond within 24-48 hours.');
-            form.reset();
-          } else {
-            alert('Oops! There was a problem. Please try again or email us directly.');
-          }
-        })
-        .catch(error => {
-          alert('Network error. Please check your connection and try again.');
-          console.error('Form error:', error);
+      // ===== SMOOTH SCROLL (nav + hero button) =====
+      const navLinks = document.querySelectorAll('.nav-links a');
+      navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const sectionName = this.textContent.trim().toLowerCase();
+          const target = document.getElementById(sectionName);
+          if (target) target.scrollIntoView({ behavior: 'smooth' });
         });
-
-        return false;
       });
-    }
 
-    // ===== SERVICE CARDS CLICK =====
-    const serviceCards = document.querySelectorAll('.service-card');
-    const serviceSelect = document.getElementById('services-select') || document.querySelector('select[name="services"]');
-    if (serviceCards.length && serviceSelect) {
-      serviceCards.forEach(card => {
-        card.addEventListener('click', () => {
-          const serviceName = card.getAttribute('data-service') || 
-                              card.querySelector('h3')?.textContent.trim();
-          if (serviceName) {
-            for (let opt of serviceSelect.options) {
-              if (opt.value === serviceName || opt.text === serviceName) {
-                opt.selected = true;
-                break;
+      const inquireBtn = document.querySelector('.hero .btn');
+      if (inquireBtn) {
+        inquireBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          const contact = document.getElementById('contact');
+          if (contact) contact.scrollIntoView({ behavior: 'smooth' });
+        });
+      }
+
+      // ===== FORM HANDLING (Formspree) =====
+      const form = document.getElementById('inquiryForm');
+      if (form) {
+        form.addEventListener('submit', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          const name = document.getElementById('name')?.value.trim();
+          const email = document.getElementById('email')?.value.trim();
+          const message = document.getElementById('message')?.value.trim();
+
+          if (!name || !email || !message) {
+            alert('Please fill in all required fields: Name, Email, and Message.');
+            return false;
+          }
+
+          const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailPattern.test(email)) {
+            alert('Please enter a valid email address.');
+            return false;
+          }
+
+          const formspreeId = 'xwvawlqa';
+          fetch('https://formspree.io/f/' + formspreeId, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { 'Accept': 'application/json' }
+          })
+          .then(response => {
+            if (response.ok) {
+              alert('✨ Thank you! Your inquiry has been sent. Zuleica will respond within 24-48 hours.');
+              form.reset();
+            } else {
+              alert('Oops! There was a problem. Please try again or email us directly.');
+            }
+          })
+          .catch(error => {
+            alert('Network error. Please check your connection and try again.');
+            console.error('Form error:', error);
+          });
+
+          return false;
+        });
+      }
+
+      // ===== SERVICE CARDS CLICK =====
+      const serviceCards = document.querySelectorAll('.service-card');
+      const serviceSelect = document.getElementById('services-select');
+      if (serviceCards.length && serviceSelect) {
+        serviceCards.forEach(card => {
+          card.addEventListener('click', () => {
+            const serviceName = card.getAttribute('data-service');
+            if (serviceName) {
+              for (let opt of serviceSelect.options) {
+                if (opt.value === serviceName) {
+                  opt.selected = true;
+                  break;
+                }
               }
             }
-          }
-          document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+          });
         });
-      });
-    }
-  })();
-</script>
+      }
+    })();
+  </script>
 </body>
 </html>
