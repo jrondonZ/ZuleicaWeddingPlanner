@@ -399,30 +399,31 @@
   position: relative;
 }
 
-.modal-gallery-item.video-item::after {
-  content: "\f04b"; /* Font Awesome play icon */
-  font-family: "Font Awesome 6 Free";
-  font-weight: 900;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 3rem;
-  color: white;
-  background: rgba(0,0,0,0.5);
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
+/* Video placeholder with play icon */
+.modal-gallery-item.video-thumb {
+  background: #f0ebe5;
   display: flex;
   align-items: center;
   justify-content: center;
-  pointer-events: none;
-  transition: background 0.2s;
+  min-height: 260px;
+  cursor: pointer;
+  position: relative;
+  border-radius: 2px;
 }
 
-.modal-gallery-item.video-item:hover::after {
-  background: rgba(0,0,0,0.7);
+.modal-gallery-item.video-thumb i {
+  font-size: 3.5rem;
+  color: #b48c7a;
+  opacity: 0.8;
+  transition: all 0.2s;
 }
+
+.modal-gallery-item.video-thumb:hover i {
+  opacity: 1;
+  transform: scale(1.1);
+  color: #4a3b32;
+}
+
 
     /* About + Bio */
     .about-wrapper {
@@ -859,8 +860,8 @@ Hace poco viví uno de los momentos más significativos de mi vida: diseñé y e
         { src: 'IMG_0452.jpeg', full: 'IMG_0452.jpeg', alt: 'Elegant tablescape' },
         { src: 'IMG_0431.jpeg', full: 'IMG_0431.jpeg', alt: 'Elegant tablescape' },
         { src: 'IMG_7136.jpeg', full: 'IMG_7136.jpeg', alt: 'Elegant tablescape' },
-        { type: 'video', src: 'IMG_4240.mov', thumb: 'video-thumbnail.jpg', alt: 'Event highlight video' },
-        { type: 'video', src: 'IMG_4241.mov', thumb: 'video-thumbnail2.jpg', alt: 'Behind the scenes' }
+        { type: 'video', src: 'IMG_4240.mov',  alt: 'Event highlight video' },
+        { type: 'video', src: 'IMG_4241.mov',  alt: 'Behind the scenes' }
         
         
         
@@ -871,11 +872,11 @@ Hace poco viví uno de los momentos más significativos de mi vida: diseñé y e
       portfolioImages.forEach((item, index) => {
       const div = document.createElement('div');
       div.className = 'modal-gallery-item';
-      if (item.type === 'video') div.classList.add('video-item');
-        div.dataset.index = index;
+      div.dataset.index = index;
 
       if (item.type === 'video') {
-        div.innerHTML = `<img src="${item.thumb}" alt="${item.alt}">`;
+        div.classList.add('video-thumb');
+        div.innerHTML = `<i class="fas fa-play-circle"></i>`;
       } else {
         div.innerHTML = `<img src="${item.src}" alt="${item.alt}" data-full="${item.full}">`;
       }
