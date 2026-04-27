@@ -958,14 +958,15 @@ function prevLightbox() {
 }
 
       // Event delegation for modal gallery images
-      modalGallery.addEventListener('click', (e) => {
-        const img = e.target.closest('img');
-        if (!img) return;
-        const parent = img.closest('.modal-gallery-item');
-        if (!parent) return;
-        const index = parseInt(parent.dataset.index, 10);
-        if (!isNaN(index)) openLightbox(index);
-      });
+      // Event delegation for modal gallery items (images AND videos)
+    modalGallery.addEventListener('click', (e) => {
+  // Find the closest gallery item div (works for both image and video thumbs)
+      const galleryItem = e.target.closest('.modal-gallery-item');
+      if (!galleryItem) return;
+  
+      const index = parseInt(galleryItem.dataset.index, 10);
+      if (!isNaN(index)) openLightbox(index);
+    });
 
       lightboxClose.addEventListener('click', closeLightbox);
       lightboxPrev.addEventListener('click', prevLightbox);
