@@ -394,6 +394,36 @@
     .lightbox-prev { left: 20px; }
     .lightbox-next { right: 20px; }
 
+    /* Video play icon overlay */
+.modal-gallery-item.video-item {
+  position: relative;
+}
+
+.modal-gallery-item.video-item::after {
+  content: "\f04b"; /* Font Awesome play icon */
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+  color: white;
+  background: rgba(0,0,0,0.5);
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transition: background 0.2s;
+}
+
+.modal-gallery-item.video-item:hover::after {
+  background: rgba(0,0,0,0.7);
+}
+
     /* About + Bio */
     .about-wrapper {
       display: flex;
@@ -827,20 +857,30 @@ Hace poco viví uno de los momentos más significativos de mi vida: diseñé y e
         { src: 'IMG_0273.jpeg', full: 'IMG_0273.jpeg', alt: 'Elegant tablescape' },
         { src: 'IMG_0271.jpeg', full: 'IMG_0271.jpeg', alt: 'Elegant tablescape' },
         { src: 'IMG_0452.jpeg', full: 'IMG_0452.jpeg', alt: 'Elegant tablescape' },
-        { src: 'IMG_0431.jpeg', full: 'IMG_0431.jpeg', alt: 'Elegant tablescape' }
+        { src: 'IMG_0431.jpeg', full: 'IMG_0431.jpeg', alt: 'Elegant tablescape' },
+        { src: 'IMG_7136.jpeg', full: 'IMG_7136.jpeg', alt: 'Elegant tablescape' },
+        { type: 'video', src: 'IMG_4240.mov', thumb: 'video-thumbnail.jpg', alt: 'Event highlight video' },
+        { type: 'video', src: 'IMG_4241.mov', thumb: 'video-thumbnail2.jpg', alt: 'Behind the scenes' }
+        
         
         
       ];
 
-      // Populate modal gallery
+       // Populate modal gallery (supports images + videos)
       const modalGallery = document.getElementById('modalGalleryGrid');
-      portfolioImages.forEach((img, index) => {
-        const item = document.createElement('div');
-        item.className = 'modal-gallery-item';
-        item.dataset.index = index;
-        item.innerHTML = `<img src="${img.src}" alt="${img.alt}" data-full="${img.full}">`;
-        modalGallery.appendChild(item);
-      });
+      portfolioImages.forEach((item, index) => {
+      const div = document.createElement('div');
+      div.className = 'modal-gallery-item';
+      if (item.type === 'video') div.classList.add('video-item');
+        div.dataset.index = index;
+
+      if (item.type === 'video') {
+        div.innerHTML = `<img src="${item.thumb}" alt="${item.alt}">`;
+      } else {
+        div.innerHTML = `<img src="${item.src}" alt="${item.alt}" data-full="${item.full}">`;
+      }
+      modalGallery.appendChild(div);
+    });
 
       // ===== PORTFOLIO MODAL LOGIC =====
       const modalOverlay = document.getElementById('portfolioModalOverlay');
@@ -873,12 +913,37 @@ Hace poco viví uno de los momentos más significativos de mi vida: diseñé y e
 
       function openLightbox(index) {
         currentLightboxIndex = index;
-        const imgData = portfolioImages[index];
-        lightboxImg.src = imgData.full;
-        lightboxImg.alt = imgData.alt;
+        const item = portfolioImages[index];
+        const lightboxContent = document.querySelector('.lightbox-content');
+  
+  // Clear previous content
+        lightboxContent.innerHTML = '';
+
+        if (item.type === 'video') {
+    // Create video element
+          const video = document.createElement('video');
+          video.src = item.src;
+          video.controls = true;
+          video.autoplay = true;
+          video.style.maxWidth = '100%';
+          video.style.maxHeight = '85vh';
+          video.style.borderRadius = '3px';
+          lightboxContent.appendChild(video);
+        } else {
+    // Create image element
+          const img = document.createElement('img');
+          img.src = item.full;
+          img.alt = item.alt;
+          img.style.maxWidth = '100%';
+          img.style.maxHeight = '85vh';
+          img.style.objectFit = 'contain';
+          img.style.borderRadius = '3px';
+          lightboxContent.appendChild(img);
+      }
+
         lightboxOverlay.classList.add('active');
         document.body.style.overflow = 'hidden';
-      }
+    }
 
       function closeLightbox() {
         lightboxOverlay.classList.remove('active');
@@ -886,18 +951,14 @@ Hace poco viví uno de los momentos más significativos de mi vida: diseñé y e
       }
 
       function nextLightbox() {
-        currentLightboxIndex = (currentLightboxIndex + 1) % portfolioImages.length;
-        const img = portfolioImages[currentLightboxIndex];
-        lightboxImg.src = img.full;
-        lightboxImg.alt = img.alt;
-      }
+  currentLightboxIndex = (currentLightboxIndex + 1) % portfolioImages.length;
+  openLightbox(currentLightboxIndex);
+}
 
-      function prevLightbox() {
-        currentLightboxIndex = (currentLightboxIndex - 1 + portfolioImages.length) % portfolioImages.length;
-        const img = portfolioImages[currentLightboxIndex];
-        lightboxImg.src = img.full;
-        lightboxImg.alt = img.alt;
-      }
+function prevLightbox() {
+  currentLightboxIndex = (currentLightboxIndex - 1 + portfolioImages.length) % portfolioImages.length;
+  openLightbox(currentLightboxIndex);
+}
 
       // Event delegation for modal gallery images
       modalGallery.addEventListener('click', (e) => {
