@@ -212,36 +212,83 @@
       font-weight: 300;
     }
 
-    /* Gallery grid (main page) */
+    /* Featured gallery (main page) */
     .gallery-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-auto-rows: 240px;
-      gap: 1rem;
-      margin: 3rem 0;
+      grid-template-columns: repeat(6, 1fr);
+      grid-auto-rows: 200px;
+      gap: 0.9rem;
+      margin: 3rem 0 2.5rem;
     }
 
     .gallery-item {
+      position: relative;
       overflow: hidden;
-      border-radius: 1px;
-      background-color: #e3dbd3;
+      border-radius: 2px;
+      background-color: #e9e2db;
+      display: block;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
     }
 
     .gallery-item img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.5s;
+      transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.3, 1), opacity 0.5s ease;
       display: block;
     }
 
-    .gallery-item:hover img {
-      transform: scale(1.03);
+    .gallery-item:hover img,
+    .gallery-item:focus-visible img {
+      transform: scale(1.05);
     }
 
-    .gallery-item:nth-child(1) { grid-column: span 2; }
-    .gallery-item:nth-child(4) { grid-column: span 2; }
-    .gallery-item:nth-child(5) { grid-column: span 2; }
+    .gallery-item:focus-visible {
+      outline: 2px solid #b48c7a;
+      outline-offset: 3px;
+    }
+
+    .gallery-caption {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 2.2rem 1.1rem 1rem;
+      background: linear-gradient(to top, rgba(38, 28, 22, 0.75), rgba(38, 28, 22, 0));
+      color: #fff;
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-align: left;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+    }
+
+    .gallery-item:hover .gallery-caption,
+    .gallery-item:focus-visible .gallery-caption {
+      opacity: 1;
+      transform: none;
+    }
+
+    @media (hover: none) {
+      .gallery-caption { opacity: 1; transform: none; }
+    }
+
+    .gallery-item:nth-child(1) { grid-column: span 3; grid-row: span 2; }
+    .gallery-item:nth-child(2) { grid-column: span 3; }
+    .gallery-item:nth-child(3) { grid-column: span 3; }
+    .gallery-item:nth-child(4) { grid-column: span 2; grid-row: span 2; }
+    .gallery-item:nth-child(5) { grid-column: span 2; grid-row: span 2; }
+    .gallery-item:nth-child(6) { grid-column: span 2; grid-row: span 2; }
+    .gallery-item:nth-child(7) { grid-column: span 3; }
+    .gallery-item:nth-child(8) { grid-column: span 3; }
 
     /* ===== Portfolio Modal ===== */
     .portfolio-modal-overlay {
@@ -275,15 +322,27 @@
 
     .modal-close {
       position: absolute;
-      top: 15px; right: 25px;
+      top: 12px; right: 18px;
       font-size: 2.2rem;
+      line-height: 1;
       color: #4a3b32;
+      background: none;
+      border: none;
+      padding: 0.2rem 0.6rem;
+      font-family: inherit;
       cursor: pointer;
       transition: color 0.2s;
+      z-index: 2;
     }
 
     .modal-close:hover {
       color: #b48c7a;
+    }
+
+    .modal-close:focus-visible {
+      outline: 2px solid #b48c7a;
+      outline-offset: 2px;
+      border-radius: 2px;
     }
 
     .modal-title {
@@ -303,30 +362,150 @@
       margin: 0.8rem auto 0;
     }
 
+    /* Modal filters */
+    .modal-filters {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.6rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .filter-chip {
+      background: transparent;
+      border: 1px solid #ddd2ca;
+      color: #5e5149;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 0.6rem 1.2rem;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-chip:hover {
+      border-color: #b48c7a;
+      color: #4a3b32;
+    }
+
+    .filter-chip.active {
+      background: #4a3b32;
+      border-color: #4a3b32;
+      color: #faf8f6;
+    }
+
+    .gallery-count {
+      text-align: center;
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #9a8879;
+      margin-bottom: 1.8rem;
+    }
+
     /* Modal image grid */
     .modal-gallery-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.2rem;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 1rem;
     }
 
     .modal-gallery-item {
+      position: relative;
       overflow: hidden;
       border-radius: 2px;
       cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
+      padding: 0;
+      border: none;
+      background: #ece5df;
+      aspect-ratio: 1 / 1;
+      transition: transform 0.25s, box-shadow 0.25s;
+      font-family: inherit;
     }
 
     .modal-gallery-item:hover {
-      transform: scale(1.02);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 22px rgba(0,0,0,0.12);
     }
 
-    .modal-gallery-item img {
+    .modal-gallery-item:focus-visible {
+      outline: 2px solid #b48c7a;
+      outline-offset: 3px;
+    }
+
+    .modal-gallery-item img,
+    .modal-gallery-item video {
       width: 100%;
-      height: 260px;
+      height: 100%;
       object-fit: cover;
       display: block;
+      opacity: 0;
+      transition: opacity 0.45s ease, transform 0.5s ease;
+    }
+
+    .modal-gallery-item img.loaded,
+    .modal-gallery-item video.loaded {
+      opacity: 1;
+    }
+
+    .modal-gallery-item:hover img {
+      transform: scale(1.05);
+    }
+
+    /* Shimmer placeholder while a thumbnail loads */
+    .modal-gallery-item:before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(100deg, #ece5df 30%, #f6f1ec 50%, #ece5df 70%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite linear;
+    }
+
+    .modal-gallery-item.is-loaded:before {
+      animation: none;
+      opacity: 0;
+    }
+
+    @keyframes shimmer {
+      from { background-position: 200% 0; }
+      to   { background-position: -200% 0; }
+    }
+
+    .modal-gallery-item[hidden] {
+      display: none;
+    }
+
+    .item-tag {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 1.8rem 0.8rem 0.7rem;
+      background: linear-gradient(to top, rgba(38, 28, 22, 0.72), rgba(38, 28, 22, 0));
+      color: #fff;
+      font-size: 0.65rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-align: left;
+      opacity: 0;
+      transition: opacity 0.25s;
+      pointer-events: none;
+    }
+
+    .modal-gallery-item:hover .item-tag,
+    .modal-gallery-item:focus-visible .item-tag {
+      opacity: 1;
+    }
+
+    .gallery-empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      color: #8a7a6f;
+      font-style: italic;
+      padding: 3rem 1rem;
     }
 
     /* Lightbox (for images clicked inside modal) */
@@ -350,79 +529,149 @@
       position: relative;
       max-width: 90%;
       max-height: 90%;
-    }
-
-    .lightbox-content img {
-      max-width: 100%;
-      max-height: 85vh;
-      object-fit: contain;
-      border-radius: 3px;
-    }
-
-    .lightbox-close {
-      position: absolute;
-      top: 20px; right: 30px;
-      font-size: 2.8rem;
-      color: white;
-      cursor: pointer;
-      z-index: 10;
-    }
-
-    .lightbox-prev, .lightbox-next {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      color: white;
-      font-size: 3rem;
-      cursor: pointer;
-      padding: 0.8rem;
-      background: rgba(0,0,0,0.4);
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
       display: flex;
       align-items: center;
       justify-content: center;
-      user-select: none;
-      transition: background 0.2s;
+      min-width: 60px;
+      min-height: 60px;
     }
 
-    .lightbox-prev:hover, .lightbox-next:hover {
-      background: rgba(0,0,0,0.8);
+    .lightbox-content img,
+    .lightbox-content video {
+      max-width: 100%;
+      max-height: 82vh;
+      object-fit: contain;
+      border-radius: 3px;
+      animation: lightboxFade 0.35s ease;
+    }
+
+    @keyframes lightboxFade {
+      from { opacity: 0; transform: scale(0.985); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    .lightbox-content.loading:after {
+      content: "";
+      position: absolute;
+      width: 34px;
+      height: 34px;
+      border: 2px solid rgba(255,255,255,0.25);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .lightbox-close,
+    .lightbox-prev,
+    .lightbox-next {
+      position: absolute;
+      background: rgba(255,255,255,0.14);
+      border: none;
+      color: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: background 0.2s;
+      z-index: 10;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .lightbox-close:hover,
+    .lightbox-prev:hover,
+    .lightbox-next:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    .lightbox-close:focus-visible,
+    .lightbox-prev:focus-visible,
+    .lightbox-next:focus-visible {
+      outline: 2px solid #fff;
+      outline-offset: 3px;
+    }
+
+    .lightbox-close {
+      top: 20px; right: 25px;
+      width: 48px; height: 48px;
+      font-size: 1.5rem;
+    }
+
+    .lightbox-prev, .lightbox-next {
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.5rem;
+      width: 60px;
+      height: 60px;
+      user-select: none;
     }
 
     .lightbox-prev { left: 20px; }
     .lightbox-next { right: 20px; }
 
-    /* Video play icon overlay */
-.modal-gallery-item.video-item {
-  position: relative;
-}
+    .lightbox-info {
+      position: absolute;
+      bottom: 22px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      color: rgba(255,255,255,0.9);
+      pointer-events: none;
+      padding: 0 5rem;
+    }
 
-/* Video placeholder with play icon */
-.modal-gallery-item.video-thumb {
-  background: #f0ebe5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 260px;
-  cursor: pointer;
-  position: relative;
-  border-radius: 2px;
-}
+    .lightbox-caption {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-style: italic;
+    }
 
-.modal-gallery-item.video-thumb i {
-  font-size: 3.5rem;
-  color: #b48c7a;
-  opacity: 0.8;
-  transition: all 0.2s;
-}
+    .lightbox-counter {
+      font-size: 0.72rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      margin-top: 0.4rem;
+    }
 
-.modal-gallery-item.video-thumb:hover i {
-  opacity: 1;
-  transform: scale(1.1);
-  color: #4a3b32;
-}
+    /* Video thumbnails: first frame when the browser can decode it,
+       an elegant placeholder when it cannot (e.g. HEVC .mov in Chrome). */
+    .modal-gallery-item.video-thumb {
+      background: #f0ebe5;
+    }
+
+    .modal-gallery-item.video-thumb.no-preview:before {
+      animation: none;
+      background: linear-gradient(150deg, #f4efe9, #e7ded6);
+      opacity: 1;
+    }
+
+    .play-badge {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.9);
+      color: #4a3b32;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      padding-left: 4px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+      transition: transform 0.25s, background 0.25s;
+      pointer-events: none;
+    }
+
+    .modal-gallery-item:hover .play-badge {
+      transform: translate(-50%, -50%) scale(1.08);
+      background: #fff;
+    }
 
 
     /* About + Bio */
@@ -587,6 +836,126 @@
       color: #b48c7a;
     }
 
+    /* ===== Scan to follow (QR codes) ===== */
+    .qr-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin: 2.5rem 0 5rem;
+    }
+
+    .qr-card {
+      background: white;
+      border: 1px solid #efe6e0;
+      border-radius: 3px;
+      padding: 2.2rem 1.5rem 1.8rem;
+      text-align: center;
+      box-shadow: 0 10px 30px -12px rgba(0,0,0,0.08);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .qr-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 34px -14px rgba(0,0,0,0.14);
+    }
+
+    .qr-network {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      font-size: 0.75rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #5e5149;
+    }
+
+    .qr-network i {
+      font-size: 1.15rem;
+      color: #b48c7a;
+    }
+
+    .qr-frame {
+      width: 190px;
+      max-width: 72%;
+      margin: 1.5rem auto 1.1rem;
+      padding: 0.7rem;
+      background: white;
+      border: 1px solid #efe6e0;
+      border-radius: 2px;
+    }
+
+    .qr-frame svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .qr-handle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      color: #3f322a;
+      word-break: break-word;
+    }
+
+    .qr-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1.3rem;
+    }
+
+    .qr-actions a,
+    .qr-actions button {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 0.65rem 1.1rem;
+      border-radius: 999px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .qr-open {
+      background: #4a3b32;
+      color: #faf8f6;
+      border: 1px solid #4a3b32;
+    }
+
+    .qr-open:hover {
+      background: #6e5b4f;
+      border-color: #6e5b4f;
+    }
+
+    .qr-save {
+      background: transparent;
+      color: #5e5149;
+      border: 1px solid #ddd2ca;
+    }
+
+    .qr-save:hover {
+      border-color: #b48c7a;
+      color: #4a3b32;
+    }
+
+    /* Tablet */
+    @media (max-width: 980px) {
+      .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: 200px;
+      }
+      .gallery-item:nth-child(n) {
+        grid-column: span 1;
+        grid-row: span 1;
+      }
+      .gallery-item:nth-child(1) {
+        grid-column: span 2;
+      }
+    }
+
     /* Mobile */
     @media (max-width: 768px) {
       .navbar {
@@ -595,21 +964,15 @@
         padding: 1.2rem;
       }
       .nav-links {
-        gap: 1.8rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.9rem 1.4rem;
       }
       .hero h1 {
         font-size: 3.2rem;
       }
       .services-grid {
         grid-template-columns: 1fr;
-      }
-      .gallery-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-      .gallery-item:nth-child(1),
-      .gallery-item:nth-child(4),
-      .gallery-item:nth-child(5) {
-        grid-column: span 1;
       }
       .form-grid {
         grid-template-columns: 1fr;
@@ -626,19 +989,37 @@
       .testimonial p {
         font-size: 1.3rem;
       }
+      .gallery-grid {
+        grid-auto-rows: 155px;
+        gap: 0.6rem;
+      }
+      .portfolio-modal {
+        width: 94%;
+        max-height: 90vh;
+        padding: 2.5rem 1.1rem 1.5rem;
+      }
+      .modal-title {
+        font-size: 2.1rem;
+      }
       .modal-gallery-grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
+        gap: 0.6rem;
+      }
+      .filter-chip {
+        padding: 0.5rem 0.9rem;
+        font-size: 0.66rem;
+        letter-spacing: 1.5px;
       }
       .lightbox-prev, .lightbox-next {
-        width: 45px; height: 45px;
-        font-size: 2rem;
+        width: 46px; height: 46px;
+        font-size: 1.2rem;
       }
-    }
-
-    @media (max-width: 480px) {
-      .modal-gallery-grid {
-        grid-template-columns: 1fr;
-      }
+      .lightbox-prev { left: 8px; }
+      .lightbox-next { right: 8px; }
+      .lightbox-close { top: 10px; right: 12px; width: 42px; height: 42px; }
+      .lightbox-info { padding: 0 1rem; bottom: 12px; }
+      .lightbox-caption { font-size: 1.05rem; }
+      .play-badge { width: 48px; height: 48px; font-size: 1.1rem; }
     }
 
     .note-for-client {
@@ -704,11 +1085,38 @@
 
   <div class="container">
     <div class="gallery-grid">
-      <div class="gallery-item"><img src="bridal30.jpg" alt="Wedding tablescape with florals"></div>
-      <div class="gallery-item"><img src="bridal12.jpg" alt="Bridal bouquet peonies"></div>
-      <div class="gallery-item"><img src="bridal32.jpg" alt="Outdoor ceremony arch"></div>
-      <div class="gallery-item"><img src="bridal13.jpg" alt="Reception dinner"></div>
-      <div class="gallery-item"><img src="bridal4.jpg" alt="Wedding cake flowers"></div>
+      <button type="button" class="gallery-item" data-src="zweding4.jpeg">
+        <img src="zweding4.jpeg" alt="Bride and groom dancing at an outdoor ceremony">
+        <span class="gallery-caption">The first dance</span>
+      </button>
+      <button type="button" class="gallery-item" data-src="bridal30.jpg">
+        <img src="bridal30.jpg" alt="Reception table with taper candles and a garden-style centerpiece">
+        <span class="gallery-caption">Reception tablescapes</span>
+      </button>
+      <button type="button" class="gallery-item" data-src="ae1bc2b5-1baf-499c-982e-056e555bd819.jpeg">
+        <img src="ae1bc2b5-1baf-499c-982e-056e555bd819.jpeg" alt="Round ceremony arch covered in pink and green florals" loading="lazy" decoding="async">
+        <span class="gallery-caption">Ceremony florals</span>
+      </button>
+      <button type="button" class="gallery-item" data-src="IMG_8812.jpeg">
+        <img src="IMG_8812.jpeg" alt="Tiered wedding cake surrounded by garden roses" loading="lazy" decoding="async">
+        <span class="gallery-caption">Sweet details</span>
+      </button>
+      <button type="button" class="gallery-item" data-src="bridal12.jpg">
+        <img src="bridal12.jpg" alt="Blush and ivory centerpiece on a reception table" loading="lazy" decoding="async">
+        <span class="gallery-caption">Centerpieces</span>
+      </button>
+      <button type="button" class="gallery-item" data-src="image000000.jpeg">
+        <img src="image000000.jpeg" alt="Royal blue draped backdrop with balloon garland and gold accents" loading="lazy" decoding="async">
+        <span class="gallery-caption">Draping & backdrops</span>
+      </button>
+      <button type="button" class="gallery-item" data-src="zwedding5.jpeg">
+        <img src="zwedding5.jpeg" alt="Couple embracing on a green hillside" loading="lazy" decoding="async">
+        <span class="gallery-caption">Destination celebrations</span>
+      </button>
+      <button type="button" class="gallery-item" data-src="IMG_9223.jpeg">
+        <img src="IMG_9223.jpeg" alt="Pink lily and rose arrangement in a white vase" loading="lazy" decoding="async">
+        <span class="gallery-caption">Floral design</span>
+      </button>
     </div>
     <div style="text-align: center;">
       <a href="#" class="btn btn-dark" id="viewFullPortfolioBtn">View Full Portfolio</a>
@@ -717,22 +1125,28 @@
 
   <!-- ===== Portfolio Modal ===== -->
   <div class="portfolio-modal-overlay" id="portfolioModalOverlay">
-    <div class="portfolio-modal">
-      <span class="modal-close" id="modalClose">&times;</span>
-      <h3 class="modal-title">Our Full Portfolio</h3>
+    <div class="portfolio-modal" role="dialog" aria-modal="true" aria-labelledby="portfolioModalTitle">
+      <button type="button" class="modal-close" id="modalClose" aria-label="Close portfolio">&times;</button>
+      <h3 class="modal-title" id="portfolioModalTitle">Our Full Portfolio</h3>
+      <div class="modal-filters" id="modalFilters" role="group" aria-label="Filter portfolio by category">
+        <!-- Filter chips are injected by JavaScript -->
+      </div>
+      <p class="gallery-count" id="galleryCount" aria-live="polite"></p>
       <div class="modal-gallery-grid" id="modalGalleryGrid">
         <!-- Images are injected by JavaScript for easy editing -->
       </div>
     </div>
   </div>
 
-  <!-- ===== Lightbox (for modal images) ===== -->
-  <div class="lightbox-overlay" id="lightboxOverlay">
-    <span class="lightbox-close" id="lightboxClose">&times;</span>
-    <span class="lightbox-prev" id="lightboxPrev"><i class="fas fa-chevron-left"></i></span>
-    <span class="lightbox-next" id="lightboxNext"><i class="fas fa-chevron-right"></i></span>
-    <div class="lightbox-content">
-      <img id="lightboxImg" src="" alt="">
+  <!-- ===== Lightbox (for gallery images & videos) ===== -->
+  <div class="lightbox-overlay" id="lightboxOverlay" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <button type="button" class="lightbox-close" id="lightboxClose" aria-label="Close viewer">&times;</button>
+    <button type="button" class="lightbox-prev" id="lightboxPrev" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+    <button type="button" class="lightbox-next" id="lightboxNext" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+    <div class="lightbox-content" id="lightboxContent"></div>
+    <div class="lightbox-info">
+      <div class="lightbox-caption" id="lightboxCaption"></div>
+      <div class="lightbox-counter" id="lightboxCounter"></div>
     </div>
   </div>
 
@@ -807,6 +1221,58 @@ Hace poco viví uno de los momentos más significativos de mi vida: diseñé y e
     </div>
   </div>
 
+  <!-- ===== Scan to Follow (QR codes for our social links) ===== -->
+  <div class="container">
+    <h2 id="follow" class="section-title">Follow Along</h2>
+    <div class="intro-text">Point your phone camera at a code — it opens straight to our latest work.</div>
+    <div class="qr-grid">
+      <div class="qr-card">
+        <div class="qr-network"><i class="fab fa-instagram" aria-hidden="true"></i> Instagram</div>
+        <div class="qr-frame">
+          <svg viewBox="0 0 41 41" role="img" aria-label="QR code linking to our Instagram profile" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">
+            <rect width="41" height="41" fill="#ffffff"/>
+            <path fill="#2e2b28" d="M4 4h7v1h-7zM12 4h2v1h-2zM15 4h1v1h-1zM18 4h3v1h-3zM22 4h1v1h-1zM24 4h3v1h-3zM30 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM12 5h1v1h-1zM14 5h3v1h-3zM19 5h3v1h-3zM24 5h1v1h-1zM30 5h1v1h-1zM36 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM15 6h2v1h-2zM20 6h3v1h-3zM24 6h3v1h-3zM28 6h1v1h-1zM30 6h1v1h-1zM32 6h3v1h-3zM36 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM13 7h1v1h-1zM16 7h1v1h-1zM18 7h1v1h-1zM23 7h3v1h-3zM27 7h2v1h-2zM30 7h1v1h-1zM32 7h3v1h-3zM36 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM13 8h1v1h-1zM15 8h3v1h-3zM19 8h1v1h-1zM21 8h2v1h-2zM27 8h1v1h-1zM30 8h1v1h-1zM32 8h3v1h-3zM36 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM13 9h1v1h-1zM15 9h1v1h-1zM17 9h1v1h-1zM21 9h1v1h-1zM25 9h2v1h-2zM30 9h1v1h-1zM36 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h1v1h-1zM28 10h1v1h-1zM30 10h7v1h-7zM15 11h1v1h-1zM18 11h1v1h-1zM20 11h1v1h-1zM22 11h1v1h-1zM27 11h2v1h-2zM5 12h1v1h-1zM10 12h4v1h-4zM16 12h2v1h-2zM19 12h3v1h-3zM26 12h1v1h-1zM28 12h2v1h-2zM35 12h2v1h-2zM6 13h2v1h-2zM9 13h1v1h-1zM14 13h1v1h-1zM16 13h4v1h-4zM22 13h2v1h-2zM25 13h1v1h-1zM27 13h1v1h-1zM32 13h3v1h-3zM5 14h1v1h-1zM7 14h2v1h-2zM10 14h1v1h-1zM12 14h6v1h-6zM19 14h2v1h-2zM22 14h1v1h-1zM24 14h1v1h-1zM26 14h1v1h-1zM28 14h2v1h-2zM32 14h1v1h-1zM34 14h1v1h-1zM4 15h1v1h-1zM6 15h1v1h-1zM8 15h1v1h-1zM11 15h1v1h-1zM13 15h2v1h-2zM17 15h1v1h-1zM19 15h2v1h-2zM27 15h1v1h-1zM31 15h5v1h-5zM6 16h2v1h-2zM9 16h5v1h-5zM17 16h1v1h-1zM19 16h6v1h-6zM30 16h2v1h-2zM4 17h2v1h-2zM9 17h1v1h-1zM13 17h3v1h-3zM21 17h1v1h-1zM27 17h1v1h-1zM30 17h2v1h-2zM33 17h1v1h-1zM35 17h2v1h-2zM10 18h2v1h-2zM16 18h4v1h-4zM22 18h1v1h-1zM24 18h1v1h-1zM29 18h2v1h-2zM33 18h1v1h-1zM35 18h1v1h-1zM6 19h1v1h-1zM8 19h2v1h-2zM11 19h3v1h-3zM15 19h7v1h-7zM27 19h1v1h-1zM29 19h1v1h-1zM31 19h4v1h-4zM36 19h1v1h-1zM5 20h1v1h-1zM8 20h1v1h-1zM10 20h1v1h-1zM13 20h2v1h-2zM16 20h2v1h-2zM19 20h1v1h-1zM21 20h2v1h-2zM26 20h1v1h-1zM28 20h2v1h-2zM31 20h3v1h-3zM36 20h1v1h-1zM5 21h1v1h-1zM8 21h1v1h-1zM12 21h3v1h-3zM16 21h3v1h-3zM20 21h2v1h-2zM23 21h2v1h-2zM26 21h5v1h-5zM33 21h2v1h-2zM36 21h1v1h-1zM6 22h3v1h-3zM10 22h1v1h-1zM12 22h2v1h-2zM16 22h1v1h-1zM20 22h6v1h-6zM27 22h1v1h-1zM30 22h2v1h-2zM33 22h2v1h-2zM36 22h1v1h-1zM9 23h1v1h-1zM12 23h1v1h-1zM14 23h1v1h-1zM16 23h1v1h-1zM19 23h2v1h-2zM22 23h2v1h-2zM27 23h1v1h-1zM32 23h5v1h-5zM5 24h1v1h-1zM9 24h6v1h-6zM16 24h1v1h-1zM21 24h1v1h-1zM26 24h1v1h-1zM28 24h2v1h-2zM31 24h3v1h-3zM35 24h2v1h-2zM4 25h3v1h-3zM8 25h2v1h-2zM15 25h1v1h-1zM17 25h1v1h-1zM20 25h2v1h-2zM23 25h1v1h-1zM26 25h2v1h-2zM31 25h2v1h-2zM4 26h1v1h-1zM6 26h2v1h-2zM9 26h2v1h-2zM13 26h1v1h-1zM15 26h1v1h-1zM17 26h1v1h-1zM19 26h1v1h-1zM25 26h2v1h-2zM28 26h2v1h-2zM32 26h1v1h-1zM35 26h1v1h-1zM4 27h1v1h-1zM6 27h1v1h-1zM14 27h1v1h-1zM18 27h1v1h-1zM20 27h2v1h-2zM23 27h1v1h-1zM27 27h1v1h-1zM29 27h3v1h-3zM34 27h3v1h-3zM4 28h2v1h-2zM7 28h1v1h-1zM9 28h2v1h-2zM12 28h1v1h-1zM16 28h6v1h-6zM23 28h1v1h-1zM28 28h6v1h-6zM35 28h1v1h-1zM12 29h1v1h-1zM15 29h1v1h-1zM18 29h2v1h-2zM21 29h1v1h-1zM23 29h3v1h-3zM27 29h2v1h-2zM32 29h1v1h-1zM34 29h1v1h-1zM36 29h1v1h-1zM4 30h7v1h-7zM12 30h5v1h-5zM18 30h4v1h-4zM24 30h5v1h-5zM30 30h1v1h-1zM32 30h1v1h-1zM34 30h2v1h-2zM4 31h1v1h-1zM10 31h1v1h-1zM14 31h1v1h-1zM16 31h3v1h-3zM21 31h3v1h-3zM27 31h2v1h-2zM32 31h4v1h-4zM4 32h1v1h-1zM6 32h3v1h-3zM10 32h1v1h-1zM15 32h1v1h-1zM18 32h2v1h-2zM21 32h1v1h-1zM24 32h1v1h-1zM26 32h1v1h-1zM28 32h6v1h-6zM4 33h1v1h-1zM6 33h3v1h-3zM10 33h1v1h-1zM13 33h4v1h-4zM18 33h2v1h-2zM22 33h3v1h-3zM27 33h1v1h-1zM29 33h1v1h-1zM31 33h3v1h-3zM36 33h1v1h-1zM4 34h1v1h-1zM6 34h3v1h-3zM10 34h1v1h-1zM13 34h1v1h-1zM16 34h1v1h-1zM20 34h1v1h-1zM23 34h1v1h-1zM25 34h2v1h-2zM28 34h1v1h-1zM31 34h3v1h-3zM35 34h2v1h-2zM4 35h1v1h-1zM10 35h1v1h-1zM12 35h2v1h-2zM15 35h2v1h-2zM19 35h1v1h-1zM21 35h4v1h-4zM26 35h1v1h-1zM30 35h5v1h-5zM4 36h7v1h-7zM14 36h2v1h-2zM18 36h1v1h-1zM21 36h1v1h-1zM23 36h1v1h-1zM26 36h4v1h-4zM31 36h1v1h-1zM33 36h1v1h-1zM35 36h1v1h-1z"/>
+          </svg>
+        </div>
+        <p class="qr-handle">@z.weddingsandmore</p>
+        <div class="qr-actions">
+          <a class="qr-open" href="https://www.instagram.com/z.weddingsandmore" target="_blank" rel="noopener noreferrer">Open <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+          <button type="button" class="qr-save" data-qr-file="zuleica-instagram-qr">Save QR <i class="fas fa-download" aria-hidden="true"></i></button>
+        </div>
+      </div>
+
+      <div class="qr-card">
+        <div class="qr-network"><i class="fab fa-tiktok" aria-hidden="true"></i> TikTok</div>
+        <div class="qr-frame">
+          <svg viewBox="0 0 41 41" role="img" aria-label="QR code linking to our TikTok profile" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">
+            <rect width="41" height="41" fill="#ffffff"/>
+            <path fill="#2e2b28" d="M4 4h7v1h-7zM13 4h2v1h-2zM19 4h1v1h-1zM21 4h2v1h-2zM27 4h1v1h-1zM30 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM17 5h1v1h-1zM20 5h2v1h-2zM23 5h1v1h-1zM26 5h1v1h-1zM28 5h1v1h-1zM30 5h1v1h-1zM36 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM17 6h3v1h-3zM23 6h6v1h-6zM30 6h1v1h-1zM32 6h3v1h-3zM36 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM13 7h3v1h-3zM19 7h1v1h-1zM21 7h4v1h-4zM27 7h1v1h-1zM30 7h1v1h-1zM32 7h3v1h-3zM36 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h5v1h-5zM18 8h1v1h-1zM21 8h5v1h-5zM27 8h1v1h-1zM30 8h1v1h-1zM32 8h3v1h-3zM36 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h3v1h-3zM16 9h1v1h-1zM19 9h1v1h-1zM23 9h1v1h-1zM28 9h1v1h-1zM30 9h1v1h-1zM36 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h1v1h-1zM28 10h1v1h-1zM30 10h7v1h-7zM13 11h1v1h-1zM16 11h3v1h-3zM20 11h3v1h-3zM25 11h1v1h-1zM28 11h1v1h-1zM5 12h1v1h-1zM8 12h1v1h-1zM10 12h1v1h-1zM12 12h2v1h-2zM17 12h3v1h-3zM21 12h7v1h-7zM29 12h1v1h-1zM31 12h2v1h-2zM34 12h1v1h-1zM6 13h1v1h-1zM9 13h1v1h-1zM11 13h1v1h-1zM14 13h1v1h-1zM22 13h1v1h-1zM25 13h1v1h-1zM27 13h1v1h-1zM29 13h1v1h-1zM33 13h3v1h-3zM4 14h1v1h-1zM7 14h1v1h-1zM9 14h2v1h-2zM12 14h1v1h-1zM15 14h1v1h-1zM18 14h4v1h-4zM24 14h2v1h-2zM27 14h1v1h-1zM30 14h1v1h-1zM33 14h1v1h-1zM4 15h1v1h-1zM9 15h1v1h-1zM11 15h1v1h-1zM13 15h2v1h-2zM16 15h4v1h-4zM21 15h3v1h-3zM25 15h1v1h-1zM28 15h2v1h-2zM36 15h1v1h-1zM4 16h3v1h-3zM8 16h1v1h-1zM10 16h1v1h-1zM14 16h1v1h-1zM17 16h2v1h-2zM20 16h1v1h-1zM22 16h7v1h-7zM30 16h1v1h-1zM32 16h2v1h-2zM35 16h1v1h-1zM4 17h1v1h-1zM11 17h1v1h-1zM16 17h1v1h-1zM20 17h2v1h-2zM23 17h1v1h-1zM25 17h1v1h-1zM27 17h1v1h-1zM29 17h1v1h-1zM31 17h1v1h-1zM33 17h1v1h-1zM4 18h1v1h-1zM8 18h1v1h-1zM10 18h1v1h-1zM14 18h1v1h-1zM16 18h2v1h-2zM21 18h3v1h-3zM26 18h10v1h-10zM4 19h2v1h-2zM7 19h1v1h-1zM9 19h1v1h-1zM11 19h1v1h-1zM13 19h4v1h-4zM19 19h3v1h-3zM23 19h3v1h-3zM27 19h1v1h-1zM29 19h2v1h-2zM32 19h1v1h-1zM4 20h1v1h-1zM6 20h2v1h-2zM10 20h1v1h-1zM12 20h1v1h-1zM15 20h1v1h-1zM17 20h1v1h-1zM20 20h1v1h-1zM22 20h1v1h-1zM24 20h3v1h-3zM28 20h1v1h-1zM30 20h1v1h-1zM32 20h2v1h-2zM35 20h1v1h-1zM6 21h2v1h-2zM9 21h1v1h-1zM11 21h6v1h-6zM18 21h2v1h-2zM21 21h1v1h-1zM25 21h4v1h-4zM33 21h2v1h-2zM4 22h1v1h-1zM6 22h1v1h-1zM10 22h2v1h-2zM14 22h3v1h-3zM19 22h1v1h-1zM21 22h1v1h-1zM27 22h5v1h-5zM33 22h1v1h-1zM35 22h1v1h-1zM4 23h1v1h-1zM6 23h3v1h-3zM11 23h1v1h-1zM13 23h1v1h-1zM17 23h9v1h-9zM28 23h1v1h-1zM30 23h2v1h-2zM4 24h2v1h-2zM8 24h3v1h-3zM12 24h2v1h-2zM16 24h1v1h-1zM19 24h4v1h-4zM24 24h3v1h-3zM28 24h1v1h-1zM30 24h1v1h-1zM32 24h2v1h-2zM35 24h2v1h-2zM4 25h3v1h-3zM9 25h1v1h-1zM13 25h3v1h-3zM17 25h1v1h-1zM20 25h1v1h-1zM22 25h3v1h-3zM26 25h2v1h-2zM29 25h1v1h-1zM31 25h1v1h-1zM33 25h3v1h-3zM6 26h2v1h-2zM9 26h2v1h-2zM15 26h2v1h-2zM19 26h1v1h-1zM25 26h1v1h-1zM27 26h3v1h-3zM31 26h2v1h-2zM34 26h2v1h-2zM6 27h2v1h-2zM12 27h2v1h-2zM16 27h4v1h-4zM21 27h1v1h-1zM25 27h2v1h-2zM29 27h2v1h-2zM32 27h1v1h-1zM35 27h1v1h-1zM4 28h2v1h-2zM9 28h2v1h-2zM12 28h2v1h-2zM20 28h1v1h-1zM23 28h4v1h-4zM28 28h5v1h-5zM35 28h1v1h-1zM12 29h1v1h-1zM14 29h2v1h-2zM17 29h2v1h-2zM20 29h1v1h-1zM22 29h1v1h-1zM24 29h1v1h-1zM27 29h2v1h-2zM32 29h1v1h-1zM34 29h3v1h-3zM4 30h7v1h-7zM14 30h1v1h-1zM16 30h3v1h-3zM24 30h1v1h-1zM26 30h1v1h-1zM28 30h1v1h-1zM30 30h1v1h-1zM32 30h2v1h-2zM35 30h1v1h-1zM4 31h1v1h-1zM10 31h1v1h-1zM13 31h1v1h-1zM15 31h3v1h-3zM20 31h1v1h-1zM23 31h1v1h-1zM25 31h2v1h-2zM28 31h1v1h-1zM32 31h1v1h-1zM35 31h2v1h-2zM4 32h1v1h-1zM6 32h3v1h-3zM10 32h1v1h-1zM12 32h2v1h-2zM21 32h2v1h-2zM24 32h3v1h-3zM28 32h6v1h-6zM4 33h1v1h-1zM6 33h3v1h-3zM10 33h1v1h-1zM14 33h1v1h-1zM16 33h1v1h-1zM19 33h1v1h-1zM21 33h5v1h-5zM27 33h1v1h-1zM30 33h6v1h-6zM4 34h1v1h-1zM6 34h3v1h-3zM10 34h1v1h-1zM13 34h2v1h-2zM18 34h3v1h-3zM24 34h1v1h-1zM29 34h4v1h-4zM4 35h1v1h-1zM10 35h1v1h-1zM12 35h1v1h-1zM14 35h1v1h-1zM16 35h1v1h-1zM18 35h1v1h-1zM20 35h3v1h-3zM24 35h2v1h-2zM28 35h2v1h-2zM4 36h7v1h-7zM14 36h3v1h-3zM18 36h1v1h-1zM20 36h1v1h-1zM23 36h6v1h-6zM36 36h1v1h-1z"/>
+          </svg>
+        </div>
+        <p class="qr-handle">@z.weddingsandmore</p>
+        <div class="qr-actions">
+          <a class="qr-open" href="https://www.tiktok.com/@z.weddingsandmore" target="_blank" rel="noopener noreferrer">Open <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+          <button type="button" class="qr-save" data-qr-file="zuleica-tiktok-qr">Save QR <i class="fas fa-download" aria-hidden="true"></i></button>
+        </div>
+      </div>
+
+      <div class="qr-card">
+        <div class="qr-network"><i class="fab fa-facebook-f" aria-hidden="true"></i> Facebook</div>
+        <div class="qr-frame">
+          <svg viewBox="0 0 41 41" role="img" aria-label="QR code linking to our Facebook page" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">
+            <rect width="41" height="41" fill="#ffffff"/>
+            <path fill="#2e2b28" d="M4 4h7v1h-7zM12 4h1v1h-1zM14 4h1v1h-1zM16 4h3v1h-3zM20 4h1v1h-1zM22 4h2v1h-2zM25 4h3v1h-3zM30 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM14 5h2v1h-2zM19 5h1v1h-1zM21 5h1v1h-1zM25 5h3v1h-3zM30 5h1v1h-1zM36 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM12 6h3v1h-3zM20 6h2v1h-2zM23 6h2v1h-2zM26 6h1v1h-1zM30 6h1v1h-1zM32 6h3v1h-3zM36 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM12 7h1v1h-1zM14 7h3v1h-3zM21 7h1v1h-1zM26 7h2v1h-2zM30 7h1v1h-1zM32 7h3v1h-3zM36 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM15 8h1v1h-1zM17 8h3v1h-3zM23 8h1v1h-1zM26 8h1v1h-1zM30 8h1v1h-1zM32 8h3v1h-3zM36 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h1v1h-1zM16 9h2v1h-2zM19 9h1v1h-1zM21 9h1v1h-1zM24 9h2v1h-2zM30 9h1v1h-1zM36 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h1v1h-1zM28 10h1v1h-1zM30 10h7v1h-7zM12 11h1v1h-1zM14 11h2v1h-2zM21 11h5v1h-5zM27 11h2v1h-2zM5 12h1v1h-1zM7 12h1v1h-1zM9 12h6v1h-6zM18 12h2v1h-2zM23 12h1v1h-1zM25 12h1v1h-1zM27 12h5v1h-5zM33 12h2v1h-2zM36 12h1v1h-1zM4 13h3v1h-3zM8 13h1v1h-1zM11 13h1v1h-1zM16 13h1v1h-1zM25 13h1v1h-1zM28 13h4v1h-4zM36 13h1v1h-1zM5 14h1v1h-1zM9 14h2v1h-2zM13 14h1v1h-1zM15 14h2v1h-2zM18 14h1v1h-1zM21 14h1v1h-1zM23 14h1v1h-1zM28 14h1v1h-1zM31 14h2v1h-2zM34 14h1v1h-1zM36 14h1v1h-1zM6 15h1v1h-1zM9 15h1v1h-1zM11 15h2v1h-2zM15 15h1v1h-1zM17 15h3v1h-3zM21 15h1v1h-1zM24 15h5v1h-5zM32 15h2v1h-2zM4 16h3v1h-3zM9 16h2v1h-2zM12 16h3v1h-3zM17 16h4v1h-4zM23 16h2v1h-2zM27 16h2v1h-2zM30 16h1v1h-1zM33 16h1v1h-1zM35 16h1v1h-1zM8 17h1v1h-1zM11 17h2v1h-2zM14 17h1v1h-1zM18 17h1v1h-1zM20 17h1v1h-1zM25 17h2v1h-2zM28 17h6v1h-6zM35 17h2v1h-2zM5 18h3v1h-3zM9 18h2v1h-2zM17 18h3v1h-3zM21 18h1v1h-1zM25 18h8v1h-8zM35 18h1v1h-1zM4 19h1v1h-1zM7 19h3v1h-3zM11 19h4v1h-4zM17 19h2v1h-2zM22 19h2v1h-2zM25 19h2v1h-2zM30 19h1v1h-1zM35 19h1v1h-1zM4 20h2v1h-2zM7 20h2v1h-2zM10 20h1v1h-1zM22 20h7v1h-7zM30 20h1v1h-1zM32 20h1v1h-1zM35 20h1v1h-1zM5 21h1v1h-1zM8 21h1v1h-1zM12 21h1v1h-1zM15 21h4v1h-4zM21 21h2v1h-2zM25 21h1v1h-1zM27 21h1v1h-1zM31 21h1v1h-1zM33 21h1v1h-1zM35 21h1v1h-1zM4 22h1v1h-1zM6 22h2v1h-2zM9 22h4v1h-4zM15 22h1v1h-1zM17 22h1v1h-1zM20 22h2v1h-2zM25 22h2v1h-2zM30 22h1v1h-1zM34 22h1v1h-1zM36 22h1v1h-1zM4 23h1v1h-1zM6 23h4v1h-4zM11 23h1v1h-1zM14 23h5v1h-5zM20 23h2v1h-2zM23 23h4v1h-4zM28 23h2v1h-2zM31 23h1v1h-1zM35 23h1v1h-1zM4 24h2v1h-2zM7 24h2v1h-2zM10 24h1v1h-1zM12 24h2v1h-2zM16 24h1v1h-1zM18 24h1v1h-1zM20 24h4v1h-4zM25 24h1v1h-1zM27 24h1v1h-1zM29 24h1v1h-1zM35 24h2v1h-2zM5 25h4v1h-4zM13 25h2v1h-2zM17 25h3v1h-3zM23 25h1v1h-1zM25 25h1v1h-1zM27 25h3v1h-3zM33 25h4v1h-4zM4 26h2v1h-2zM8 26h5v1h-5zM14 26h1v1h-1zM17 26h5v1h-5zM23 26h1v1h-1zM26 26h1v1h-1zM30 26h1v1h-1zM32 26h1v1h-1zM34 26h1v1h-1zM36 26h1v1h-1zM5 27h1v1h-1zM8 27h1v1h-1zM12 27h1v1h-1zM14 27h1v1h-1zM16 27h4v1h-4zM22 27h1v1h-1zM25 27h2v1h-2zM28 27h1v1h-1zM31 27h1v1h-1zM33 27h1v1h-1zM35 27h1v1h-1zM4 28h1v1h-1zM7 28h1v1h-1zM9 28h6v1h-6zM17 28h3v1h-3zM22 28h4v1h-4zM28 28h5v1h-5zM12 29h1v1h-1zM18 29h1v1h-1zM22 29h3v1h-3zM26 29h1v1h-1zM28 29h1v1h-1zM32 29h2v1h-2zM36 29h1v1h-1zM4 30h7v1h-7zM12 30h5v1h-5zM18 30h1v1h-1zM20 30h2v1h-2zM24 30h1v1h-1zM26 30h1v1h-1zM28 30h1v1h-1zM30 30h1v1h-1zM32 30h4v1h-4zM4 31h1v1h-1zM10 31h1v1h-1zM12 31h2v1h-2zM16 31h1v1h-1zM18 31h5v1h-5zM24 31h3v1h-3zM28 31h1v1h-1zM32 31h1v1h-1zM36 31h1v1h-1zM4 32h1v1h-1zM6 32h3v1h-3zM10 32h1v1h-1zM13 32h1v1h-1zM16 32h2v1h-2zM19 32h4v1h-4zM24 32h1v1h-1zM26 32h1v1h-1zM28 32h6v1h-6zM4 33h1v1h-1zM6 33h3v1h-3zM10 33h1v1h-1zM12 33h2v1h-2zM16 33h1v1h-1zM18 33h1v1h-1zM20 33h3v1h-3zM24 33h2v1h-2zM27 33h2v1h-2zM30 33h1v1h-1zM32 33h1v1h-1zM35 33h1v1h-1zM4 34h1v1h-1zM6 34h3v1h-3zM10 34h1v1h-1zM13 34h2v1h-2zM16 34h1v1h-1zM19 34h1v1h-1zM22 34h1v1h-1zM24 34h6v1h-6zM32 34h3v1h-3zM36 34h1v1h-1zM4 35h1v1h-1zM10 35h1v1h-1zM12 35h10v1h-10zM24 35h3v1h-3zM29 35h1v1h-1zM4 36h7v1h-7zM13 36h3v1h-3zM17 36h1v1h-1zM19 36h2v1h-2zM22 36h2v1h-2zM25 36h1v1h-1zM28 36h3v1h-3zM32 36h1v1h-1zM35 36h1v1h-1z"/>
+          </svg>
+        </div>
+        <p class="qr-handle">Z Weddings &amp; More</p>
+        <div class="qr-actions">
+          <a class="qr-open" href="https://www.facebook.com/share/1GUZdHqBiL/" target="_blank" rel="noopener noreferrer">Open <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+          <button type="button" class="qr-save" data-qr-file="zuleica-facebook-qr">Save QR <i class="fas fa-download" aria-hidden="true"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <footer>
     <div>© 2026 Zuleica Wedding Planner · All rights reserved</div>
     <div class="social-icons">
@@ -824,157 +1290,396 @@ Hace poco viví uno de los momentos más significativos de mi vida: diseñé y e
 
   <script>
     (function() {
-      const portfolioImages = [
-        { src: 'IMG_5458.jpeg', full: 'IMG_5458.jpeg', alt: 'Wedding tablescape' },
-        { src: 'IMG_8799.jpeg', full: 'IMG_8799.jpeg', alt: 'Outdoor ceremony arch' },
-        { src: 'IMG_8800.jpeg', full: 'IMG_8800.jpeg', alt: 'Reception dinner' },
-        { src: 'IMG_8801.jpeg', full: 'IMG_8801.jpeg', alt: 'Wedding cake flowers' },
-        { src: 'IMG_8802.jpeg', full: 'IMG_8802.jpeg', alt: 'Elegant tablescape' },
-        { src: 'IMG_8805.jpeg', full: 'IMG_8805', alt: 'Peony bouquet' },
-        { src: 'IMG_8812.jpeg', full: 'IMG_8812.jpeg', alt: 'Ceremony arch' },
-        { src: 'IMG_9223.jpeg', full: 'IMG_9923.jpeg', alt: 'Couple' },
-        { src: 'bdf31e6b-d01c-42ec-9fd1-c7bb535755ad.jpeg', full: 'bdf31e6b-d01c-42ec-9fd1-c7bb535755ad.jpeg', alt: 'Centerpiece' },
-        { src: 'image000000.jpeg', full: 'image000000.jpeg', alt: 'Elegant tablescape' },
-        { src: 'IMG_8797.jpeg', full: 'IMG_8797.jpeg', alt: 'Elegant tablescape' },
-        { src: 'IMG_8674.jpeg', full: 'IMG_8674.jpeg', alt: 'Elegant tablescape' },
-        { src: 'IMG_7606.jpeg', full: 'IMG_7606.jpeg', alt: 'Elegant tablescape' },
-        { src: 'IMG_1881.jpeg', full: 'IMG_1881.jpeg', alt: 'Elegant tablescape' },
-        //new images 4/26/26
-        { src: 'ae1bc2b5-1baf-499c-982e-056e555bd819.jpeg', full: 'ae1bc2b5-1baf-499c-982e-056e555bd819.jpeg', alt: 'Elegant tablescape' },
-        { src: 'IMG_4244.jpeg', full: 'IMG_4244.jpeg', alt: 'Elegant tablescape' },
-        { src: 'IMG_8149.jpeg', full: 'IMG_8149.jpeg', alt: 'Elegant tablescape' },
-        { type: 'video', src: 'IMG_4240.mov',  alt: 'Event highlight video' },
-        { type: 'video', src: 'IMG_4241.mov',  alt: 'Behind the scenes' },
-        { src: 'c3ce8e87-5c3d-4477-8586-62b3b380cd70.jpeg', full: 'c3ce8e87-5c3d-4477-8586-62b3b380cd70.jpeg', alt: 'Elegant tablescape' },
-        { src: 'IMG_7753.jpeg', full: 'IMG_7753.jpeg', alt: 'Elegant tablescape' },
-        //new images 5/6/26
-        { src: 'zwedding1.jpeg', full: 'zwedding1.jpeg', alt: 'Elegant tablescape' },
-        { src: 'zwedding2.jpeg', full: 'zwedding2.jpeg', alt: 'Elegant tablescape' },
-        { src: 'zwedding3.jpeg', full: 'zwedding3.jpeg', alt: 'Elegant tablescape' },
-        { src: 'zwedding4.jpeg', full: 'zwedding4.jpeg', alt: 'Elegant tablescape' },
-        { src: 'zwedding5.jpeg', full: 'zwedding5.jpeg', alt: 'Elegant tablescape' },
-        { src: 'zwedding6.jpeg', full: 'zwedding6.jpeg', alt: 'Elegant tablescape' },
-        
+      // ===== PORTFOLIO DATA =====
+      // To add work: drop the file in the folder and add a line below.
+      // cat: weddings | tables | florals | decor | celebrations | video
+      const CATEGORIES = [
+        { id: 'all',          label: 'All' },
+        { id: 'weddings',     label: 'Weddings' },
+        { id: 'tables',       label: 'Tablescapes' },
+        { id: 'florals',      label: 'Florals' },
+        { id: 'decor',        label: 'Backdrops & Balloons' },
+        { id: 'celebrations', label: 'Celebrations' },
+        { id: 'video',        label: 'Video' }
       ];
 
-       // Populate modal gallery (supports images + videos)
-      const modalGallery = document.getElementById('modalGalleryGrid');
-      portfolioImages.forEach((item, index) => {
-      const div = document.createElement('div');
-      div.className = 'modal-gallery-item';
-      div.dataset.index = index;
+      const portfolioImages = [
+        { src: 'zweding4.jpeg',   cat: 'weddings', alt: 'Bride and groom dancing at an outdoor ceremony' },
+        { src: 'ae1bc2b5-1baf-499c-982e-056e555bd819.jpeg', cat: 'decor', alt: 'Round ceremony arch covered in pink and green florals' },
+        { src: 'bridal30.jpg',    cat: 'tables',   alt: 'Reception table with taper candles and a garden-style centerpiece' },
+        { src: 'IMG_8812.jpeg',   cat: 'weddings', alt: 'Tiered wedding cake surrounded by garden roses' },
+        { src: 'image000000.jpeg', cat: 'decor',   alt: 'Royal blue draped backdrop with balloon garland and gold accents' },
+        { src: 'zwedding5.jpeg',  cat: 'weddings', alt: 'Couple embracing on a green hillside' },
+        { src: 'IMG_9223.jpeg',   cat: 'florals',  alt: 'Pink lily and rose arrangement in a white vase' },
+        { src: 'bridal12.jpg',    cat: 'tables',   alt: 'Blush and ivory centerpiece on a reception table' },
+        { src: 'zwedding6.jpeg',  cat: 'weddings', alt: 'Newlyweds celebrating with hands raised in an open field' },
+        { src: 'c3ce8e87-5c3d-4477-8586-62b3b380cd70.jpeg', cat: 'decor', alt: 'Purple and white draped sweetheart table with fairy lights' },
+        { src: 'bridal4.jpg',     cat: 'tables',   alt: 'Long floral runner in blush, ivory and green' },
+        { src: 'zwedding2.jpeg',  cat: 'weddings', alt: 'Bride in the countryside beside a horse' },
+        { src: 'bdf31e6b-d01c-42ec-9fd1-c7bb535755ad.jpeg', cat: 'decor', alt: 'Fairytale castle backdrop with blue and gold balloon garland' },
+        { src: 'IMG_8797.jpeg',   cat: 'florals',  alt: 'Bright tropical bouquet wrapped in white paper' },
+        { src: 'bridal32.jpg',    cat: 'weddings', alt: 'Pinning the boutonniere on the groom before the ceremony' },
+        { src: 'IMG_5458.jpeg',   cat: 'decor',    alt: 'Head table with red velvet draping and rose petals' },
+        { src: 'bridal40.jpg',    cat: 'tables',   alt: 'Place setting with taper candles and delicate blooms' },
+        { src: 'IMG_8799.jpeg',   cat: 'florals',  alt: 'Oversized red rose arrangement in a gold vase' },
+        { src: 'zwedding3.jpeg',  cat: 'weddings', alt: 'Bride seated at a rustic wooden gazebo' },
+        { src: 'IMG_7753.jpeg',   cat: 'decor',    alt: 'Happy Anniversary backdrop with blush drape and balloon garland' },
+        { src: 'tennyray-05.jpg', cat: 'tables',   alt: 'Peach and cream centerpiece with tapered candles' },
+        { src: 'IMG_8149.jpeg',   cat: 'florals',  alt: 'Pink rose bouquet with a plush character topper' },
+        { src: 'bridal13.jpg',    cat: 'weddings', alt: 'Wedding gown hanging by a window with city views' },
+        { src: 'IMG_1881.jpeg',   cat: 'decor',    alt: 'Blue and neutral balloon garland with a welcome sign' },
+        { src: 'zwedding1.jpeg',  cat: 'tables',   alt: 'Head table with pastel florals and blue napkins' },
+        { src: 'IMG_8805.jpeg',   cat: 'florals',  alt: 'Lavender and pink hand-tied bouquet' },
+        { src: 'bridal11.jpg',    cat: 'tables',   alt: 'Place setting with a teal napkin, menu card and gold flatware' },
+        { src: 'IMG_0245.jpeg',   cat: 'decor',    alt: 'Illuminated white heart backdrop for a ceremony' },
+        { src: 'IMG_4244.jpeg',   cat: 'florals',  alt: 'Pink wrapped bouquet with lilies and gerberas' },
+        { src: 'bridal39.jpg',    cat: 'weddings', alt: 'Zuleica styling a reception table before guests arrive' },
+        { src: 'IMG_6997.jpeg',   cat: 'decor',    alt: 'Rose gold graduation balloon arch on a garden patio' },
+        { src: 'IMG_8801.jpeg',   cat: 'florals',  alt: 'Tiered pink rose arrangement with a teddy bear' },
+        { src: 'IMG_8674.jpeg',   cat: 'tables',   alt: 'White and ivory arrangements lining a long table' },
+        { src: 'IMG_7606.jpeg',   cat: 'decor',    alt: 'Teal balloon monogram with neon signage' },
+        { src: 'IMG_8802.jpeg',   cat: 'florals',  alt: 'Rose and gerbera basket finished with a pink bow' },
+        { src: 'IMG_0452.jpeg',   cat: 'florals',  alt: 'Hoop arrangement with sunflowers, lilies and roses' },
+        { src: 'IMG_7136.jpeg',   cat: 'decor',    alt: 'Pink and black balloon garland at a storefront opening' },
+        { src: 'IMG_0014poster.jpeg', cat: 'decor', alt: 'Balloon centerpiece with a teddy bear for a baby shower' },
+        { src: 'IMG_8800.jpeg',   cat: 'celebrations', alt: 'Sunflower cart arrangement with a bottle of champagne' },
+        { src: 'IMG_0271.jpeg',   cat: 'celebrations', alt: 'Grandma balloon paired with a mixed flower arrangement' },
+        { src: 'IMG_0273.jpeg',   cat: 'celebrations', alt: 'Teddy bear balloon with a pink rose arrangement' },
+        { src: 'IMG_0431.jpeg',   cat: 'celebrations', alt: 'Clear bubble balloon with florals and a gerbera wreath' },
+        { src: 'IMG_0516.jpeg',   cat: 'celebrations', alt: 'Money bouquet folded into a fan of bills' },
+        { src: 'IMG_6998.jpeg',   cat: 'celebrations', alt: 'Congratulations balloon with a teddy bear gift basket' },
+        { src: 'd240052a-cd2f-4eac-91ad-fd43af4b861f.jpeg', cat: 'celebrations', alt: 'Graduation sunflower arrangement with a personalized balloon' },
+        { type: 'video', src: 'IMG_4240.mov', cat: 'video', alt: 'Event highlight video' },
+        { type: 'video', src: 'IMG_4241.mov', cat: 'video', alt: 'Behind the scenes video' }
+      ];
 
-      if (item.type === 'video') {
-        div.classList.add('video-thumb');
-        div.innerHTML = `<i class="fas fa-play-circle"></i>`;
-      } else {
-        div.innerHTML = `<img src="${item.src}" alt="${item.alt}" data-full="${item.full}">`;
+      // ===== SHARED HELPERS =====
+      let scrollLocks = 0;
+      function lockScroll() {
+        if (++scrollLocks === 1) document.body.style.overflow = 'hidden';
       }
-      modalGallery.appendChild(div);
-    });
+      function unlockScroll() {
+        if (scrollLocks > 0 && --scrollLocks === 0) document.body.style.overflow = '';
+      }
 
-      // ===== PORTFOLIO MODAL LOGIC =====
+      const modalGallery = document.getElementById('modalGalleryGrid');
+      const modalFilters = document.getElementById('modalFilters');
+      const galleryCount = document.getElementById('galleryCount');
+      let gridBuilt = false;
+      let activeFilter = 'all';
+      // Indexes (into portfolioImages) the lightbox arrows currently walk through
+      let activeList = portfolioImages.map((_, i) => i);
+
+      // ===== BUILD THE PORTFOLIO GRID (on first open, so the page loads fast) =====
+      function buildGrid() {
+        if (gridBuilt) return;
+        gridBuilt = true;
+
+        const frag = document.createDocumentFragment();
+        portfolioImages.forEach((item, index) => {
+          const tile = document.createElement('button');
+          tile.type = 'button';
+          tile.className = 'modal-gallery-item';
+          tile.dataset.index = index;
+          tile.dataset.cat = item.cat || 'all';
+          tile.setAttribute('aria-label', 'View ' + item.alt);
+
+          if (item.type === 'video') {
+            tile.classList.add('video-thumb');
+            const video = document.createElement('video');
+            video.src = item.src + '#t=0.1'; // nudge past frame 0 so a still shows
+            video.muted = true;
+            video.playsInline = true;
+            video.preload = 'metadata';
+            video.tabIndex = -1;
+            video.addEventListener('loadeddata', () => {
+              video.classList.add('loaded');
+              tile.classList.add('is-loaded');
+            });
+            video.addEventListener('error', () => {
+              tile.classList.add('is-loaded', 'no-preview');
+            });
+            tile.appendChild(video);
+            const badge = document.createElement('span');
+            badge.className = 'play-badge';
+            badge.innerHTML = '<i class="fas fa-play" aria-hidden="true"></i>';
+            tile.appendChild(badge);
+          } else {
+            const img = document.createElement('img');
+            img.src = item.src;
+            img.alt = item.alt;
+            img.loading = 'lazy';
+            img.decoding = 'async';
+            img.addEventListener('load', () => {
+              img.classList.add('loaded');
+              tile.classList.add('is-loaded');
+            });
+            img.addEventListener('error', () => {
+              tile.classList.add('is-loaded', 'no-preview');
+            });
+            tile.appendChild(img);
+          }
+
+          const tag = document.createElement('span');
+          tag.className = 'item-tag';
+          tag.textContent = item.alt;
+          tile.appendChild(tag);
+
+          frag.appendChild(tile);
+        });
+        modalGallery.appendChild(frag);
+
+        // Filter chips
+        CATEGORIES.forEach(cat => {
+          const count = cat.id === 'all'
+            ? portfolioImages.length
+            : portfolioImages.filter(i => i.cat === cat.id).length;
+          if (!count) return;
+          const chip = document.createElement('button');
+          chip.type = 'button';
+          chip.className = 'filter-chip' + (cat.id === 'all' ? ' active' : '');
+          chip.dataset.cat = cat.id;
+          chip.textContent = cat.label;
+          chip.setAttribute('aria-pressed', cat.id === 'all' ? 'true' : 'false');
+          modalFilters.appendChild(chip);
+        });
+
+        applyFilter('all');
+      }
+
+      function applyFilter(catId) {
+        activeFilter = catId;
+        activeList = [];
+
+        modalGallery.querySelectorAll('.modal-gallery-item').forEach(tile => {
+          const show = catId === 'all' || tile.dataset.cat === catId;
+          tile.hidden = !show;
+          if (show) activeList.push(parseInt(tile.dataset.index, 10));
+        });
+
+        modalFilters.querySelectorAll('.filter-chip').forEach(chip => {
+          const on = chip.dataset.cat === catId;
+          chip.classList.toggle('active', on);
+          chip.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+
+        const label = (CATEGORIES.find(c => c.id === catId) || {}).label || 'All';
+        galleryCount.textContent = catId === 'all'
+          ? activeList.length + ' pieces of work'
+          : activeList.length + ' in ' + label;
+      }
+
+      modalFilters.addEventListener('click', (e) => {
+        const chip = e.target.closest('.filter-chip');
+        if (chip) applyFilter(chip.dataset.cat);
+      });
+
+      // ===== PORTFOLIO MODAL =====
       const modalOverlay = document.getElementById('portfolioModalOverlay');
       const openBtn = document.getElementById('viewFullPortfolioBtn');
       const closeBtn = document.getElementById('modalClose');
+      let modalOpener = null;
 
-      openBtn.addEventListener('click', (e) => {
-        e.preventDefault();
+      function openModal(e) {
+        if (e) e.preventDefault();
+        modalOpener = document.activeElement;
+        buildGrid();
         modalOverlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
-      });
-
-      function closeModal() {
-        modalOverlay.classList.remove('active');
-        document.body.style.overflow = '';
+        lockScroll();
+        closeBtn.focus();
       }
 
+      function closeModal() {
+        if (!modalOverlay.classList.contains('active')) return;
+        modalOverlay.classList.remove('active');
+        unlockScroll();
+        if (modalOpener && modalOpener.focus) modalOpener.focus();
+      }
+
+      openBtn.addEventListener('click', openModal);
       closeBtn.addEventListener('click', closeModal);
       modalOverlay.addEventListener('click', (e) => {
         if (e.target === modalOverlay) closeModal();
       });
 
-      // ===== LIGHTBOX LOGIC =====
+      // ===== LIGHTBOX =====
       const lightboxOverlay = document.getElementById('lightboxOverlay');
-      const lightboxImg = document.getElementById('lightboxImg');
+      const lightboxContent = document.getElementById('lightboxContent');
+      const lightboxCaption = document.getElementById('lightboxCaption');
+      const lightboxCounter = document.getElementById('lightboxCounter');
       const lightboxClose = document.getElementById('lightboxClose');
       const lightboxPrev = document.getElementById('lightboxPrev');
       const lightboxNext = document.getElementById('lightboxNext');
-      let currentLightboxIndex = 0;
+      let listPosition = 0;      // position within activeList
+      let lightboxOpener = null;
 
-      function openLightbox(index) {
-        currentLightboxIndex = index;
-        const item = portfolioImages[index];
-        const lightboxContent = document.querySelector('.lightbox-content');
-  
-  // Clear previous content
+      function renderLightbox() {
+        const item = portfolioImages[activeList[listPosition]];
+        if (!item) return;
+
         lightboxContent.innerHTML = '';
+        lightboxContent.classList.add('loading');
 
         if (item.type === 'video') {
-    // Create video element
           const video = document.createElement('video');
           video.src = item.src;
           video.controls = true;
           video.autoplay = true;
-          video.style.maxWidth = '100%';
-          video.style.maxHeight = '85vh';
-          video.style.borderRadius = '3px';
+          video.playsInline = true;
+          video.addEventListener('loadeddata', () => lightboxContent.classList.remove('loading'));
+          video.addEventListener('error', () => {
+            lightboxContent.classList.remove('loading');
+            lightboxContent.innerHTML = '<p style="color:#fff;font-family:Cormorant Garamond,serif;' +
+              'font-size:1.3rem;font-style:italic;padding:2rem;text-align:center;">' +
+              'This video can\'t be played in your browser.</p>';
+          });
           lightboxContent.appendChild(video);
         } else {
-    // Create image element
           const img = document.createElement('img');
-          img.src = item.full;
           img.alt = item.alt;
-          img.style.maxWidth = '100%';
-          img.style.maxHeight = '85vh';
-          img.style.objectFit = 'contain';
-          img.style.borderRadius = '3px';
+          img.addEventListener('load', () => lightboxContent.classList.remove('loading'));
+          img.addEventListener('error', () => lightboxContent.classList.remove('loading'));
+          img.src = item.src;
           lightboxContent.appendChild(img);
+        }
+
+        lightboxCaption.textContent = item.alt;
+        lightboxCounter.textContent = (listPosition + 1) + ' / ' + activeList.length;
+
+        const single = activeList.length < 2;
+        lightboxPrev.hidden = single;
+        lightboxNext.hidden = single;
+
+        // Warm up the neighbours so arrows feel instant
+        [listPosition - 1, listPosition + 1].forEach(p => {
+          const neighbour = portfolioImages[activeList[(p + activeList.length) % activeList.length]];
+          if (neighbour && neighbour.type !== 'video') new Image().src = neighbour.src;
+        });
       }
 
-        lightboxOverlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
+      function openLightbox(position, list) {
+        if (Array.isArray(list)) activeList = list;
+        if (!activeList.length) return;
+        listPosition = (position + activeList.length) % activeList.length;
+        if (!lightboxOverlay.classList.contains('active')) {
+          lightboxOpener = document.activeElement;
+          lightboxOverlay.classList.add('active');
+          lockScroll();
+          lightboxClose.focus();
+        }
+        renderLightbox();
+      }
 
       function closeLightbox() {
+        if (!lightboxOverlay.classList.contains('active')) return;
+        const video = lightboxContent.querySelector('video');
+        if (video) video.pause();
+        lightboxContent.innerHTML = '';   // stops any playback for good
         lightboxOverlay.classList.remove('active');
-        document.body.style.overflow = '';
+        unlockScroll();
+        if (lightboxOpener && lightboxOpener.focus) lightboxOpener.focus();
       }
 
-      function nextLightbox() {
-  currentLightboxIndex = (currentLightboxIndex + 1) % portfolioImages.length;
-  openLightbox(currentLightboxIndex);
-}
+      function stepLightbox(delta) {
+        listPosition = (listPosition + delta + activeList.length) % activeList.length;
+        renderLightbox();
+      }
 
-function prevLightbox() {
-  currentLightboxIndex = (currentLightboxIndex - 1 + portfolioImages.length) % portfolioImages.length;
-  openLightbox(currentLightboxIndex);
-}
+      // Portfolio tiles open the lightbox within the current filter
+      modalGallery.addEventListener('click', (e) => {
+        const tile = e.target.closest('.modal-gallery-item');
+        if (!tile) return;
+        const index = parseInt(tile.dataset.index, 10);
+        const position = activeList.indexOf(index);
+        if (position !== -1) openLightbox(position);
+      });
 
-      // Event delegation for modal gallery images
-      // Event delegation for modal gallery items (images AND videos)
-    modalGallery.addEventListener('click', (e) => {
-  // Find the closest gallery item div (works for both image and video thumbs)
-      const galleryItem = e.target.closest('.modal-gallery-item');
-      if (!galleryItem) return;
-  
-      const index = parseInt(galleryItem.dataset.index, 10);
-      if (!isNaN(index)) openLightbox(index);
-    });
+      // Featured images on the page open the lightbox across the whole portfolio
+      document.querySelectorAll('.gallery-grid .gallery-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const src = item.dataset.src;
+          const index = portfolioImages.findIndex(p => p.src === src);
+          openLightbox(index === -1 ? 0 : index, portfolioImages.map((_, i) => i));
+        });
+      });
 
       lightboxClose.addEventListener('click', closeLightbox);
-      lightboxPrev.addEventListener('click', prevLightbox);
-      lightboxNext.addEventListener('click', nextLightbox);
-
+      lightboxPrev.addEventListener('click', () => stepLightbox(-1));
+      lightboxNext.addEventListener('click', () => stepLightbox(1));
       lightboxOverlay.addEventListener('click', (e) => {
         if (e.target === lightboxOverlay) closeLightbox();
       });
 
+      // Swipe between images on touch devices
+      let touchStartX = 0, touchStartY = 0;
+      lightboxOverlay.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].clientX;
+        touchStartY = e.changedTouches[0].clientY;
+      }, { passive: true });
+      lightboxOverlay.addEventListener('touchend', (e) => {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        const dy = e.changedTouches[0].clientY - touchStartY;
+        if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) stepLightbox(dx < 0 ? 1 : -1);
+      }, { passive: true });
+
       document.addEventListener('keydown', (e) => {
-        if (!lightboxOverlay.classList.contains('active')) return;
-        if (e.key === 'Escape') closeLightbox();
-        if (e.key === 'ArrowRight') nextLightbox();
-        if (e.key === 'ArrowLeft') prevLightbox();
+        if (lightboxOverlay.classList.contains('active')) {
+          if (e.key === 'Escape') closeLightbox();
+          if (e.key === 'ArrowRight') stepLightbox(1);
+          if (e.key === 'ArrowLeft') stepLightbox(-1);
+          return;
+        }
+        if (modalOverlay.classList.contains('active') && e.key === 'Escape') closeModal();
+      });
+
+      // ===== QR CODES: save as an image =====
+      function triggerDownload(href, filename) {
+        const link = document.createElement('a');
+        link.href = href;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        if (href.indexOf('blob:') === 0) setTimeout(() => URL.revokeObjectURL(href), 1000);
+      }
+
+      document.querySelectorAll('.qr-save').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const card = btn.closest('.qr-card');
+          const svg = card && card.querySelector('svg');
+          if (!svg) return;
+          const name = btn.dataset.qrFile || 'qr-code';
+          const size = 1024;
+
+          // Firefox needs explicit dimensions before an SVG can be drawn to canvas
+          const clone = svg.cloneNode(true);
+          clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+          clone.setAttribute('width', size);
+          clone.setAttribute('height', size);
+          const svgUrl = 'data:image/svg+xml;charset=utf-8,' +
+            encodeURIComponent(new XMLSerializer().serializeToString(clone));
+
+          const saveSvg = () => triggerDownload(svgUrl, name + '.svg');
+          const img = new Image();
+          img.onload = () => {
+            try {
+              const canvas = document.createElement('canvas');
+              canvas.width = canvas.height = size;
+              const ctx = canvas.getContext('2d');
+              ctx.fillStyle = '#ffffff';
+              ctx.fillRect(0, 0, size, size);
+              ctx.imageSmoothingEnabled = false;
+              ctx.drawImage(img, 0, 0, size, size);
+              canvas.toBlob(blob => {
+                blob ? triggerDownload(URL.createObjectURL(blob), name + '.png') : saveSvg();
+              }, 'image/png');
+            } catch (err) {
+              saveSvg();
+            }
+          };
+          img.onerror = saveSvg;
+          img.src = svgUrl;
+        });
       });
 
       // ===== SMOOTH SCROLL (nav + hero button) =====
